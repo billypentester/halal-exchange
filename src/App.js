@@ -1,25 +1,26 @@
-import logo from './logo.svg';
-import './App.css';
+import * as React from 'react';
+import Navbar from './components/Navbar';
+import './index.css';
+import { Routes, Route } from "react-router-dom"
+
+import Landing from "./components/Landing"
+import Swap from "./components/Swap"
+import Tokens from "./components/Tokens"
+import Pools from "./components/Pools"
+
 
 function App() {
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={ <Landing/> } />
+        <Route path="/swap" element={ <Swap/> } />
+        <Route path="tokens" element={ <Tokens/> } />
+        <Route path="pools" element={ <Pools/> } />
+      </Routes>
     </div>
   );
 }
-
 export default App;
