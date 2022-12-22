@@ -15,7 +15,7 @@ function Pools() {
 
         <div class="card text-center shadow-lg col-3">
           <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="primary">
-            <img src={createPool} class="img-fluid " />
+            <img src={createPool} class="img-fluid" />
             <a href="#!">
               <div class="mask" style={{ backgroundColor: 'rgba(251, 251, 251, 0.15)' }}></div>
             </a>
@@ -25,7 +25,7 @@ function Pools() {
             <p class="card-text">
               Some quick example text to build on the card title and make up the bulk of the card's content.
             </p>
-            <button type="button" class="btn btn-outline-white">New Position</button>
+            <button type="button" class="btn btn-lg btn-outline-white">New Position</button>
           </div>
         </div>
 
@@ -41,7 +41,7 @@ function Pools() {
             <p class="card-text">
               Some quick example text to build on the card title and make up the bulk of the card's content.
             </p>
-            <button type="button" class="btn btn-outline-white">Connect to Wallet</button>
+            <button type="button" class="btn btn-lg btn-outline-white">Connect to Wallet</button>
           </div>
         </div>
 
@@ -57,7 +57,7 @@ function Pools() {
             <p class="card-text">
               Some quick example text to build on the card title and make up the bulk of the card's content.
             </p>
-            <button type="button" class="btn btn-outline-white">Check Pools</button>
+            <button type="button" class="btn btn-lg btn-outline-white">Check Pools</button>
           </div>
         </div>
         

@@ -1,89 +1,7 @@
 import React from 'react'
+import tokens from './../data/tokens.js'
 
 function Tokens() {
-
-  const tokens = [
-    {
-      id: 1,
-      name: 'Ether ETH',
-      price: '$1,209.98',
-      change: '0.02%',
-      marketGap: '$1,209.98',
-      action: 'Buy'
-    },
-    {
-      id: 2,
-      name: 'Ether ETH',
-      price: '$1,209.98',
-      change: '0.02%',
-      marketGap: '$1,209.98',
-      action: 'Buy'
-    },
-    {
-      id: 3,
-      name: 'Ether ETH',
-      price: '$1,209.98',
-      change: '0.02%',
-      marketGap: '$1,209.98',
-      action: 'Buy'
-    },
-    {
-      id: 4,
-      name: 'Ether ETH',
-      price: '$1,209.98',
-      change: '0.02%',
-      marketGap: '$1,209.98',
-      action: 'Buy'
-    },
-    {
-      id: 5,
-      name: 'Ether ETH',
-      price: '$1,209.98',
-      change: '0.02%',
-      marketGap: '$1,209.98',
-      action: 'Buy'
-    },
-    {
-      id: 6,
-      name: 'Ether ETH',
-      price: '$1,209.98',
-      change: '0.02%',
-      marketGap: '$1,209.98',
-      action: 'Buy'
-    },
-    {
-      id: 7,
-      name: 'Ether ETH',
-      price: '$1,209.98',
-      change: '0.02%',
-      marketGap: '$1,209.98',
-      action: 'Buy'
-    },
-    {
-      id: 8,
-      name: 'Ether ETH',
-      price: '$1,209.98',
-      change: '0.02%',
-      marketGap: '$1,209.98',
-      action: 'Buy'
-    },
-    {
-      id: 9,
-      name: 'Ether ETH',
-      price: '$1,209.98',
-      change: '0.02%',
-      marketGap: '$1,209.98',
-      action: 'Buy'
-    },
-    {
-      id: 10,
-      name: 'Ether ETH',
-      price: '$1,209.98',
-      change: '0.02%',
-      marketGap: '$1,209.98',
-      action: 'Buy'
-    },
-  ]
 
   return (
     <div class="container" style={{ marginTop:'4rem' }}>
@@ -122,12 +40,12 @@ function Tokens() {
 
           <div class="dropdown mx-1">
             <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-mdb-toggle="dropdown" aria-expanded="false">
-              coins
+              Ethereum
             </button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <li><a class="dropdown-item">Ethererum</a></li>
-              <li><a class="dropdown-item">Bitcoin</a></li>
               <li><a class="dropdown-item">Polygon</a></li>
+              <li><a class="dropdown-item">Optimism</a></li>
+              <li><a class="dropdown-item">Arbitrum</a></li>
             </ul>
           </div>
 
@@ -153,16 +71,17 @@ function Tokens() {
                   <th scope="row">{token.id}</th>
                   <td>
                     <div class="d-flex align-items-center">
-                      <img style={{ width: '40px', height: '40px' }} class="rounded-circle m-1" src="https://cloudfront-us-east-1.images.arcpublishing.com/coindesk/ZJZZK5B2ZNF25LYQHMUTBTOMLU.png" alt="token" />
-                      <span class="m-1 h6">{token.name}</span>
-                    </div>
+                      <img style={{ width: '40px', height: '40px' }} class="rounded-circle m-1" src={token.image} alt="token" />
+                      <span class="m-1">{token.name}</span>
+                      <span class="m-1">{token.token}</span>
+                    </div>  
                   </td>
-                  <td>{token.price}</td>
-                  <td>{token.change}</td>
-                  <td>{token.marketGap}</td>
-                  <td>
+                  <td class="h6">{token.price}</td>
+                  <td class="h6">{token.change}</td>
+                  <td class="h6">{token.marketGap}</td>
+                  <td>                   
                     <button type="button" class="btn btn-primary">{token.action}</button>
-                  </td>
+                  </td>               
                 </tr>
               ))
             }

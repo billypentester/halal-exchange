@@ -44,8 +44,51 @@ function Swap() {
             aria-labelledby="home-tab0"
           >
             <h5 class="mx-5 my-3">You sent</h5>
+            <div class="d-flex mx-5 p-2">
+              <input type="text" id="form12" class="form-control form-control-lg border-0 px-4 rounded-pill shadow-3-strong mx-3" placeholder='0.0' />
+              <div class="dropdown mx-2 ">
+                <button
+                  class="btn btn-primary dropdown-toggle rounded-pill"
+                  type="button"
+                  id="dropdownMenuButton"
+                  data-mdb-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  ETH
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <li><a class="dropdown-item" href="#">DAI</a></li>
+                  <li><a class="dropdown-item" href="#">USDC</a></li>
+                  <li><a class="dropdown-item" href="#">WETH</a></li>
+                </ul>
+              </div>
+            </div>
+            <h5 class="mx-5 my-3">You get</h5>
+            <div class="d-flex mx-5 p-2">
+              <input type="text" id="form12" class="form-control form-control-lg border-0 px-4 rounded-pill shadow-3-strong mx-3" placeholder='0.0' />
+              <div class="dropdown mx-2">
+                <button
+                  class="btn btn-primary dropdown-toggle rounded-pill"
+                  type="button"
+                  id="dropdownMenuButton"
+                  data-mdb-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  ETH
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <li><a class="dropdown-item" href="#">DAI</a></li>
+                  <li><a class="dropdown-item" href="#">USDC</a></li>
+                  <li><a class="dropdown-item" href="#">WETH</a></li>
+                </ul>
+              </div>
+            </div>
+            <button type="button" class="btn btn-lg btn-primary rounded-pill my-5 d-block w-75 mx-auto">Swap</button>
+          </div>
+          <div class="tab-pane fade" id="profile0" role="tabpanel" aria-labelledby="profile-tab0">
+          <h5 class="mx-5 my-3">You sent</h5>
             <div class="d-flex mx-4 p-2">
-              <input type="text" id="form12" class="form-control border-0 px-4 rounded-pill shadow-3-strong mx-3" placeholder='0.0' />
+              <input type="text" id="form12" class="form-control form-control-lg border-0 px-4 rounded-pill shadow-3-strong mx-3" placeholder='0.0' />
               <div class="dropdown mx-3 ">
                 <button
                   class="btn btn-primary dropdown-toggle rounded-pill"
@@ -57,15 +100,15 @@ function Swap() {
                   ETH
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  <li><a class="dropdown-item" href="#">Action</a></li>
-                  <li><a class="dropdown-item" href="#">Another action</a></li>
-                  <li><a class="dropdown-item" href="#">Something else here</a></li>
+                  <li><a class="dropdown-item" href="#">DAI</a></li>
+                  <li><a class="dropdown-item" href="#">USDC</a></li>
+                  <li><a class="dropdown-item" href="#">WETH</a></li>
                 </ul>
               </div>
             </div>
             <h5 class="mx-5 my-3">You get</h5>
             <div class="d-flex mx-4 p-2">
-              <input type="text" id="form12" class="form-control border-0 px-4 rounded-pill shadow-3-strong mx-3" placeholder='0.0' />
+              <input type="text" id="form12" class="form-control form-control-lg border-0 px-4 rounded-pill shadow-3-strong mx-3" placeholder='0.0' />
               <div class="dropdown mx-3">
                 <button
                   class="btn btn-primary dropdown-toggle rounded-pill"
@@ -77,17 +120,13 @@ function Swap() {
                   ETH
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  <li><a class="dropdown-item" href="#">Action</a></li>
-                  <li><a class="dropdown-item" href="#">Another action</a></li>
-                  <li><a class="dropdown-item" href="#">Something else here</a></li>
+                  <li><a class="dropdown-item" href="#">DAI</a></li>
+                  <li><a class="dropdown-item" href="#">USDC</a></li>
+                  <li><a class="dropdown-item" href="#">WETH</a></li>
                 </ul>
               </div>
             </div>
-            <button type="button" class="btn btn-primary rounded-pill mx-5 my-4">Swap</button>
-          </div>
-          <div class="tab-pane fade" id="profile0" role="tabpanel" aria-labelledby="profile-tab0">
-            <h5 class="mx-5 my-3">You sent</h5>
-            <h5 class="mx-5 my-3">You get</h5>
+            <button type="button" class="btn btn-lg btn-primary rounded-pill my-5 d-block w-75 mx-auto">Swap</button>
           </div>
         </div>
       </div>
