@@ -4,10 +4,11 @@ import { Link } from 'react-router-dom'
 
 function Navbar() {
   return (    
-    <nav class="navbar navbar-expand-lg navbar-light bg-primary">  
+    <nav class="navbar navbar-expand-lg navbar-light bg-primary w-100" style={{ position:'absolute', top:0, zIndex:10 }}>  
+
         <div class="container">    
 
-            <button class="navbar-toggler" type="button" data-mdb-toggle="collapse" data-mdb-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" >
+            <button class="navbar-toggler" type="button" data-mdb-toggle="collapse" data-mdb-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <i class="fas fa-bars"></i>
             </button>
 
@@ -37,7 +38,8 @@ function Navbar() {
                 </ul>      
             </div> 
 
-        </div>  
+        </div> 
+         
     </nav>
   )
 }
