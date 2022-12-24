@@ -107,7 +107,7 @@ const tokens = [
       change:'0.15%',
       marketGap:'$3.9M',
       action:'buy',
-      image:'https://raw.githubusercontent.com/Uniswap/assets/master/blockchains/ethereum/assets/0xBe9895146f7AF43049ca1c1AE358B0541Ea49704/logo.png'
+      image:'https://assets.coingecko.com/coins/images/27008/large/cbeth.png?1661390066'
     },
     {
       id:12,

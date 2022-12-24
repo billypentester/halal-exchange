@@ -5,8 +5,9 @@ import { Routes, Route } from "react-router-dom"
 
 import Landing from "./components/Landing"
 import Swap from "./components/Swap"
-import Tokens from "./components/Tokens"
-import Pools from "./components/Pools"
+
+import TokenRouter from "./components/Tokens/TokenRouter"
+import PoolRouter from "./components/Pools/PoolRouter"
 
 
 function App() {
@@ -17,8 +18,8 @@ function App() {
       <Routes>
         <Route path="/" element={ <Landing/> } />
         <Route path="/swap" element={ <Swap/> } />
-        <Route path="tokens" element={ <Tokens/> } />
-        <Route path="pools" element={ <Pools/> } />
+        <Route path="/tokens/*" element={ <TokenRouter/> } />
+        <Route path="/pools/*" element={ <PoolRouter/> } />
       </Routes>
     </div>
   );

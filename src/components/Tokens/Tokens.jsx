@@ -1,7 +1,14 @@
 import React from 'react'
-import tokens from './../data/tokens.js'
+import tokens from '../../data/tokens.js'
+import { useNavigate } from 'react-router-dom';
 
 function Tokens() {
+
+  const navigate = useNavigate();
+
+  const handleRowClick = () => {
+    navigate('/tokens/statistics');
+  }
 
   return (
     <div class="container" style={{ marginTop:'4rem' }}>
@@ -67,12 +74,12 @@ function Tokens() {
         <tbody>
             {
               tokens.map((token) => (
-                <tr key={token.id}>
+                <tr key={token.id} style={{ cursor:'pointer' }} onClick={handleRowClick}>
                   <th scope="row">{token.id}</th>
                   <td>
                     <div class="d-flex align-items-center">
                       <img style={{ width: '40px', height: '40px' }} class="rounded-circle m-1" src={token.image} alt="token" />
-                      <span class="m-1">{token.name}</span>
+                      <span class="m-1 h6">{token.name}</span>
                       <span class="m-1">{token.token}</span>
                     </div>  
                   </td>
@@ -88,9 +95,6 @@ function Tokens() {
         </tbody>
       </table>
 
-      <div>
-
-      </div>
     </div>
   )
 }
