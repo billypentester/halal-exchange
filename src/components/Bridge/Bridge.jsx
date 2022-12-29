@@ -5,33 +5,33 @@ import topPools from './../../images/topPools.png'
 import checkLiquidity from './../../images/checkLiquidity.png'
 import createPool from './../../images/createPool.png'
 
-function Tokens() {
+function Bridge() {
 
   const content = [
     {
-      image: createPool,
-      title: "Create Token",
+      image: topPools,
+      title: "Use Bridge",
       text: "Some quick example text to build on the card title and make up the bulk of the card's content.",
       button: "New Position",
-      link: "/tokens/create"
+      link: "/bridge/use"
     },
     {
-      image: topPools,
-      title: "Top Tokens",
+      image: checkLiquidity,
+      title: "Liquidity to Bridge",
       text: "Some quick example text to build on the card title and make up the bulk of the card's content.",
       button: "New Position",
-      link: "/tokens/top"
+      link: "/bridge/liquidity"
     }
   ]
 
   return (
-    <div className="container" style={{ marginTop:'4rem' }}>
+    <div class="container" style={{ marginTop:'4rem' }}>
 
-      <div className="py-5 text-center">
-        <h1 className="display-6">Tokens</h1>
+      <div class="py-5 text-center">
+        <h1 class="display-6">Bridge</h1>
       </div>
 
-      <div className="d-flex mb-5 justify-content-evenly flex-wrap">
+      <div class="d-flex mb-5 justify-content-evenly flex-wrap">
         {content.map((item, index) => (
           <Card key={index} image={item.image} title={item.title} text={item.text} button={item.button} link={item.link} />
         ))}
@@ -41,4 +41,4 @@ function Tokens() {
   )
 }
 
-export default Tokens
+export default Bridge

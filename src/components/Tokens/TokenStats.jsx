@@ -1,10 +1,131 @@
-import React from 'react'
+import React, {useEffect} from 'react'
+import { useParams } from 'react-router-dom'
+import tokens from '../../data/tokens'
+import { Link } from 'react-router-dom'
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+} from 'chart.js';
+import { Line } from 'react-chartjs-2';
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 function TokenStats() {
+
+  const options = {
+    responsive: true,
+    labels: {
+      fontColor: '#fff',
+      display: false,
+    },
+    scales: {
+      y: {
+        display:false,
+      },
+      // x: {
+      //   display:false,
+      // }
+    }
+  };
+
+  const labels = ['1:00 AM', '5:00 AM', '9:00 AM', '1:00 PM', '5:00 PM', '9:00 PM'];
+
+  const data = {
+    labels,
+    datasets: [
+      {
+        label: 'value',
+        data:[1208, 1190, 1195, 1195, 1204, 1196, 1212, 1208, 1211, 1200, 1204, 1197, 1206, 1202, 1195, 1212, 1211, 1205, 1204, 1195, 1208, 1197, 1191, 1209, 1212, 1193, 1192, 1197, 1195, 1206, 1194, 1198, 1194, 1201, 1204, 1205, 1205, 1196, 1211, 1190, 1208, 1211, 1205, 1193, 1210, 1194, 1199, 1203, 1212, 1209, 1194, 1191, 1195, 1207, 1194, 1203, 1207, 1202, 1198, 1203, 1195, 1198, 1194, 1203, 1196, 1210, 1211, 1206, 1195, 1197, 1194, 1208, 1190, 1193, 1211, 1198, 1190, 1191, 1209, 1196, 1193, 1206, 1192, 1206, 1204, 1193, 1194, 1197, 1192, 1202, 1205, 1192, 1197, 1205, 1192, 1207, 1210, 1191, 1209, 1194, 1200, 1209, 1203, 1212, 1195, 1190, 1193, 1201, 1196, 1207, 1204, 1205, 1199, 1210, 1193, 1209, 1210, 1206, 1192, 1206, 1199, 1199, 1207, 1210, 1212, 1193, 1208, 1209, 1192, 1194, 1191, 1205, 1210, 1207, 1212, 1195, 1192, 1201, 1207, 1194, 1198, 1199, 1204, 1200],
+        borderColor: '#3b71ca',
+        backgroundColor: '#3b71ca',
+        fill: false,
+        lineTension: 0.5,
+      },
+
+    ],
+  };
+  
+  const { id } = useParams();
+
+  const [tokenStat, setTokenStat] = React.useState('');
+
+  useEffect(() => {
+    const token = tokens.filter((token) => token.id == id);
+    setTokenStat(token[0]);
+  },[id])
+
   return (
-    <div class="container" style={{ marginTop:'4rem' }}>
-      <div class="py-5 text-center">
-        <h1 class="display-6">Token Stat</h1>
+    <div className="container" style={{ marginTop:'4rem' }}>
+      <div className="p-5 bg-light h-25">
+        <div className="d-flex align-items-center">
+          <img src={tokenStat.image} alt={tokenStat.name} className="img-fluid mx-1" style={{ width:'50px' }} />
+            <h1 className="">{tokenStat.name}</h1>
+        </div>
+        <nav className="d-flex">
+          <h6 className="mb-0">
+            <Link to="/tokens" className="text-reset">Tokens</Link>
+            <span> / </span>
+            <Link to="/tokens/top" className="text-reset text-decoration-underline">Top Token</Link>
+          </h6>
+        </nav>
+      </div>
+      <div className="d-flex my-3 justify-content-center">
+
+        <div className="col-7 bg-light rounded-3 p-3 mx-2 shadow-3">
+          <Line options={options} data={data} />
+        </div>
+
+        <div className="col-4 rounded-3 p-2 mx-2">
+
+          <div className='d-flex flex-column text-end p-3 rounded-3 bg-light shadow-3'>
+            <h1>{tokenStat.price}</h1>
+            <span className="text-success h4">+{tokenStat.change}</span>
+          </div>
+
+          <div className="d-flex justify-content-center align-items-center my-3 rounded-3 flex-wrap">
+
+            <div className='col-5 bg-primary m-3 p-3 box rounded-2 text-light shadow-3'>
+              <div className='d-flex flex-column text-center'>
+                <h3>$808.8M</h3>
+                <span>TVL</span>
+              </div>
+            </div>
+            <div className='col-5 bg-primary m-3 p-3 box rounded-2 text-light shadow-3'>
+              <div className='d-flex flex-column text-center'>
+                <h3>$325.7M</h3>
+                <span>24H volume</span>
+              </div>
+            </div>
+            <div className='col-5 bg-primary m-3 p-3 box rounded-2 text-light shadow-3'>
+              <div className='d-flex flex-column text-center'>
+                <h3>$878.41</h3>
+                <span>52W low</span>
+              </div>
+            </div>
+            <div className='col-5 bg-primary m-3 p-3 box rounded-2 text-light shadow-3'>
+              <div className='d-flex flex-column text-center'>
+                <h3>$3.9K</h3>
+                <span>52W high</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
       </div>
     </div>
   )
