@@ -1,11 +1,18 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import Card from './../Utilities/Card'
+import Seo from './../Utilities/Seo'
 
 import topPools from './../../images/topPools.png'
-import checkLiquidity from './../../images/checkLiquidity.png'
 import createPool from './../../images/createPool.png'
 
 function Tokens() {
+
+  useEffect(() => {
+    Seo({
+      title: "Tokens",
+      description: "Tokens page",
+    })
+  }, []);
 
   const content = [
     {

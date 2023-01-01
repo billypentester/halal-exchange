@@ -1,12 +1,26 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import logo from './../../images/logo.png'
 import { Link } from 'react-router-dom'
 
-function Navbar() {
-  return (    
-    <nav className="navbar navbar-expand-lg navbar-light bg-primary w-100 shadow-none" style={{ position:'absolute', top:0, zIndex:10 }}>  
+function Navbar({shadow}) {
 
-        <div className="container">    
+    useEffect(() => {
+        if (shadow) 
+        {
+            document.querySelector('.navbar').classList.remove('shadow-none')
+            document.querySelector('.navbar').classList.add('shadow-lg')
+        }
+        else
+        {
+            document.querySelector('.navbar').classList.remove('shadow-lg')
+            document.querySelector('.navbar').classList.add('shadow-none')
+        }
+    }, [shadow]);
+
+  return (    
+    <nav className='navbar fixed-top navbar-expand-md navbar-light bg-primary w-100 shadow-none' >  
+
+        <div className="container-lg container-fluid">    
 
             <button className="navbar-toggler" type="button" data-mdb-toggle="collapse" data-mdb-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <i className="fas fa-bars"></i>

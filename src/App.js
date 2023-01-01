@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Routes, Route } from "react-router-dom"
+import { Routes, Route, useLocation } from "react-router-dom"
 import './index.css';
 
 import Navbar from './components/Utilities/Navbar';
@@ -15,9 +15,11 @@ import Error from "./components/Utilities/Error"
 
 function App() {
 
+  const location = useLocation();
+
   return (
     <div className="App">
-      <Navbar />
+      <Navbar shadow={ location.pathname === "/" ? false : true } />
       <Routes>
         <Route path="/" element={ <Landing/> } />
         <Route path="/swap" element={ <Swap/> } />

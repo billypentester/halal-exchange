@@ -1,6 +1,15 @@
-import React from 'react'
+import React, {useEffect} from 'react'
+import Seo from './Utilities/Seo'
 
 function Swap() {
+
+  useEffect(() => {
+    Seo({
+      title: "Swap",
+      description: "Swap page",
+    })
+  }, []);
+
   return (
     <div className="d-flex justify-content-center flex-column align-items-center" style={{height:'100vh'}}>
        <div className="my-5 text-center col-4 d-flex flex-column">
