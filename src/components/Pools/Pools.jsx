@@ -2,10 +2,6 @@ import React, {useEffect} from 'react'
 import Card from './../Utilities/Card'
 import Seo from './../Utilities/Seo'
 
-import topPools from './../../images/topPools.png'
-import checkLiquidity from './../../images/checkLiquidity.png'
-import createPool from './../../images/createPool.png'
-
 function Pools() {
 
   useEffect(() => {
@@ -17,24 +13,24 @@ function Pools() {
 
   const content = [
     {
-      image: createPool,
+      image: "https://img.icons8.com/ios/50/null/swimming-pool.png",
       title: "Create Pool",
-      text: "Some quick example text to build on the card title and make up the bulk of the card's content.",
-      button: "New Position",
+      text: "Create your own pool and earn liquidity mining rewards that are distributed to liquidity providers",
+      button: "Create",
       link: "/pools/create"
     },
     {
-      image: checkLiquidity,
+      image: "https://img.icons8.com/ios/50/null/swimming-pool.png",
       title: "Check Liquidity",
-      text: "Some quick example text to build on the card title and make up the bulk of the card's content.",
-      button: "New Position",
+      text: "Find out how much liquidity is in a pool and how much you can earn by providing liquidity",
+      button: "Find",
       link: "/pools/liquidity"
     },
     {
-      image: topPools,
+      image: "https://img.icons8.com/ios/50/null/swimming-pool.png",
       title: "Top Pools",
-      text: "Some quick example text to build on the card title and make up the bulk of the card's content.",
-      button: "New Position",
+      text: "Find the top pools by liquidity and volume and earn the most rewards by providing liquidity",
+      button: "Explore",
       link: "/pools/top"
     },
   ]

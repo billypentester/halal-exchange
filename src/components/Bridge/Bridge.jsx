@@ -2,9 +2,6 @@ import React, {useEffect} from 'react'
 import Card from './../Utilities/Card'
 import Seo from './../Utilities/Seo'
 
-import topPools from './../../images/topPools.png'
-import checkLiquidity from './../../images/checkLiquidity.png'
-
 function Bridge() {
 
   useEffect(() => {
@@ -16,17 +13,17 @@ function Bridge() {
 
   const content = [
     {
-      image: topPools,
+      image: "https://img.icons8.com/ios/50/null/bridge.png",
       title: "Use Bridge",
-      text: "Some quick example text to build on the card title and make up the bulk of the card's content.",
-      button: "New Position",
+      text: "Gateway to other blockchains and tokens to use in the ecosystem by bridging them to the native token",
+      button: "Use",
       link: "/bridge/use"
     },
     {
-      image: checkLiquidity,
+      image: "https://img.icons8.com/ios/50/null/bridge.png",
       title: "Liquidity to Bridge",
-      text: "Some quick example text to build on the card title and make up the bulk of the card's content.",
-      button: "New Position",
+      text: "Provide liquidity to the bridge and earn rewards for providing liquidity to the bridge pool",
+      button: "Find",
       link: "/bridge/liquidity"
     }
   ]

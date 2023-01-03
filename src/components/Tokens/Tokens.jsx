@@ -2,9 +2,6 @@ import React, {useEffect} from 'react'
 import Card from './../Utilities/Card'
 import Seo from './../Utilities/Seo'
 
-import topPools from './../../images/topPools.png'
-import createPool from './../../images/createPool.png'
-
 function Tokens() {
 
   useEffect(() => {
@@ -16,17 +13,17 @@ function Tokens() {
 
   const content = [
     {
-      image: createPool,
+      image: "https://img.icons8.com/external-glyph-wichaiwi/64/null/external-token-digital-asset-glyph-wichaiwi.png",
       title: "Create Token",
-      text: "Some quick example text to build on the card title and make up the bulk of the card's content.",
-      button: "New Position",
+      text: "Make your cryptocurrency by creating your own token in decenteralized exchange",
+      button: "Create",
       link: "/tokens/create"
     },
     {
-      image: topPools,
+      image: "https://img.icons8.com/external-glyph-wichaiwi/64/null/external-token-digital-asset-glyph-wichaiwi.png",
       title: "Top Tokens",
-      text: "Some quick example text to build on the card title and make up the bulk of the card's content.",
-      button: "New Position",
+      text: "Here are trending tokens that can be purchased and exchanged in this exchanges",
+      button: "Explore",
       link: "/tokens/top"
     }
   ]
