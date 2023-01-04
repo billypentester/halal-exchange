@@ -1,7 +1,8 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import gif from './../images/landingPage.png'
 import {Link} from 'react-router-dom'
 import Seo from './Utilities/Seo'
+import BeatLoader from "react-spinners/BeatLoader"
 
 function Landing() {
 
@@ -13,7 +14,7 @@ function Landing() {
   }, []);
 
   return (
-      <div className="bg-primary">
+    <div className="bg-primary">
       <div className="container-lg container-fluid d-flex justify-content-around align-items-center p-5" style={{ height:'100vh' }}>
         <div className="col-10 col-md-5 py-5">
           <h1 className="text-white my-4">Welcome to the Decentralized Exchange</h1>
@@ -31,7 +32,7 @@ function Landing() {
           <img src={gif} className="img-fluid" alt="landing page" />
         </div>
       </div>
-      </div>
+    </div>
   )
 }
 

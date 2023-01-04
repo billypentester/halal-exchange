@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 
 function Card({ image, title, text, button, link }) {
   return (
-    <div className="card text-center shadow-lg col-3 rounded-0 border border-end-0 border-start-0 border-bottom-0 border-3 border-primary">
+    <div className="card m-2 text-center shadow-lg col-10 col-sm-5 col-md-5 col-lg-3 rounded-0 border border-end-0 border-start-0 border-bottom-0 border-3 border-primary">
         <div className="bg-image hover-overlay ripple" data-mdb-ripple-color="primary">
             <img src={image} alt={title} className="img-fluid p-5" />
             <Link to={link}>

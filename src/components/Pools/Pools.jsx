@@ -42,7 +42,7 @@ function Pools() {
         <h1 class="display-6">Pools</h1>
       </div>
 
-      <div class="d-flex mb-5 justify-content-evenly flex-wrap">
+      <div class="d-flex mb-5 flex-wrap justify-content-center">
         {content.map((item, index) => (
           <Card key={index} image={item.image} title={item.title} text={item.text} button={item.button} link={item.link} />
         ))}

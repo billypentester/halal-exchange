@@ -35,7 +35,7 @@ function Tokens() {
         <h1 className="display-6">Tokens</h1>
       </div>
 
-      <div className="d-flex mb-5 justify-content-evenly flex-wrap">
+      <div className="d-flex mb-5 flex-wrap justify-content-center">
         {content.map((item, index) => (
           <Card key={index} image={item.image} title={item.title} text={item.text} button={item.button} link={item.link} />
         ))}
