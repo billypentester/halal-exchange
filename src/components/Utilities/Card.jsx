@@ -13,7 +13,9 @@ function Card({ image, title, text, button, link }) {
         <div className="card-body">
             <h5 className="h4">{title}</h5>
             <p className="card-text my-3">{text}</p>
-            <button type="button" className="btn btn-lg btn-primary my-2">{button}</button>
+            <Link to={link}>
+              <button type="button" className="btn btn-lg btn-primary my-2">{button}</button>
+            </Link>
         </div>
     </div>
   )
