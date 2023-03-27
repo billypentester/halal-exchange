@@ -39,7 +39,7 @@ function CreateToken() {
               </div>
             </div>
             <div className='container my-4'>
-              <button type="button" className="btn btn-primary btn-lg rounded-pill w-100">Create Token</button>
+              <button type="button" data-mdb-ripple-color="primary" className="btn btn-primary btn-lg rounded-pill w-100" data-mdb-toggle="modal" data-mdb-target="#exampleModal">Connect Wwallet</button>
             </div>
           </div>
         </div>

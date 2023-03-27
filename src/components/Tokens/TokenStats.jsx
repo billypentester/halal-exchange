@@ -66,64 +66,79 @@ function TokenStats() {
   },[id])
 
   return (
-    <div className="container" style={{ marginTop:'4rem' }}>
-      <div className="p-5 bg-light h-25">
-        <div className="d-flex align-items-center">
-          <img src={tokenStat.image} alt={tokenStat.name} className="img-fluid mx-1" style={{ width:'50px' }} />
-            <h1 className="">{tokenStat.name}</h1>
-        </div>
-        <nav className="d-flex">
-          <h6 className="mb-0">
-            <Link to="/tokens" className="text-reset">Tokens</Link>
-            <span> / </span>
-            <Link to="/tokens/top" className="text-reset text-decoration-underline">Top Token</Link>
-          </h6>
-        </nav>
-      </div>
-      <div className="d-flex my-3 justify-content-center">
+    <div style={{ marginTop:'4rem' }}>
 
-        <div className="col-7 bg-light rounded-3 p-3 mx-2 shadow-3">
+      <div className="bg-light shadow-1-strong">
+        <div className="p-5 container h-25">
+          <div className="d-flex justify-content-between">
+            <div className="d-flex align-items-center">
+              <img src={tokenStat.image} alt={tokenStat.name} className="img-fluid mx-3" style={{ width:'50px' }} />
+              <h1 className="m-0">{tokenStat.name}</h1>
+            </div>
+            <div>
+              <button className="btn btn-lg btn-primary mx-3">
+                <Link to={`/swap`} className="text-decoration-none text-light">Swap {tokenStat.name}</Link>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="container d-flex my-3 justify-content-center">
+
+        <div className="col-7 bg-light rounded-3 p-3 mx-2 shadow-1-strong">
           <Line options={options} data={data} />
         </div>
 
-        <div className="col-4 rounded-3 p-2 mx-2">
+        <div className="col-4 rounded-3 mx-2">
 
-          <div className='d-flex flex-column text-end p-3 rounded-3 bg-light shadow-3'>
+          <div className='d-flex flex-column text-end p-3 rounded-3 bg-light shadow-1-strong'>
             <h1>{tokenStat.price}</h1>
             <span className="text-success h4">+{tokenStat.change}</span>
           </div>
 
           <div className="d-flex justify-content-center align-items-center my-3 rounded-3 flex-wrap">
 
-            <div className='col-5 bg-primary m-3 p-3 box rounded-2 text-light shadow-3'>
+            <div className='col-5 bg-primary m-3 p-3 box rounded-2 text-light shadow-4'>
               <div className='d-flex flex-column text-center'>
-                <h3>$808.8M</h3>
+                <h3>$ 808.8M</h3>
                 <span>TVL</span>
               </div>
             </div>
-            <div className='col-5 bg-primary m-3 p-3 box rounded-2 text-light shadow-3'>
+            <div className='col-5 bg-primary m-3 p-3 box rounded-2 text-light shadow-4'>
               <div className='d-flex flex-column text-center'>
-                <h3>$325.7M</h3>
+                <h3>$ 325.7M</h3>
                 <span>24H volume</span>
               </div>
             </div>
-            <div className='col-5 bg-primary m-3 p-3 box rounded-2 text-light shadow-3'>
+            <div className='col-5 bg-primary m-3 p-3 box rounded-2 text-light shadow-4'>
               <div className='d-flex flex-column text-center'>
-                <h3>$878.41</h3>
+                <h3>$ 878.41</h3>
                 <span>52W low</span>
               </div>
             </div>
-            <div className='col-5 bg-primary m-3 p-3 box rounded-2 text-light shadow-3'>
+            <div className='col-5 bg-primary m-3 p-3 box rounded-2 text-light shadow-4'>
               <div className='d-flex flex-column text-center'>
-                <h3>$3.9K</h3>
+                <h3>$ 3.9K</h3>
                 <span>52W high</span>
               </div>
             </div>
 
           </div>
+
         </div>
 
       </div>
+
+      <div className="container m-5 col-7">
+          <h2>Description</h2>
+          <p className="p-3">
+            USD Coin (USDC) is a stablecoin that is pegged to the US dollar, meaning that its value is designed to be equivalent to one US dollar. It is an ERC-20 token built on the Ethereum blockchain, but it can also be issued on other blockchain networks, such as Algorand and Solana. USDC is one of the most popular stablecoins and is widely used in decentralized finance (DeFi) applications, as well as for trading on cryptocurrency exchanges.
+            USDC is backed by reserves of US dollars held in custody by regulated financial institutions, which are audited regularly to ensure transparency and accountability.<br/> This makes USDC a trustworthy and reliable stablecoin, as it is fully collateralized by a reserve of assets that can be redeemed at any time. Moreover, USDC transactions are fast, cheap, and secure, as they can be settled on the Ethereum blockchain in a matter of seconds and are subject to the same level of security as other Ethereum-based tokens.
+            Overall, USDC is a stable and convenient cryptocurrency that can be used for a variety of purposes, from making payments and remittances to trading and investing in DeFi protocols. Its stability and transparency make it an attractive alternative to traditional payment methods and other cryptocurrencies that are subject to price volatility.
+          </p>
+      </div>
+
     </div>
   )
 }
