@@ -1,5 +1,5 @@
 import React from 'react'
-import { Route, Routes, useNavigate } from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom'
 
 import Bridge from './Bridge'
 import UseBridge from './UseBridge'
@@ -12,6 +12,7 @@ function PoolRouter() {
           <Route path="/" element={ <Bridge /> } />
           <Route path="/use" element={ <UseBridge /> } />
           <Route path="/liquidity" element={ <BridgeLiquidity /> } />
+          <Route path="/positions" element={ <BridgeLiquidity /> } />
         </Routes>
     </>
   )

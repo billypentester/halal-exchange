@@ -1,8 +1,7 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect} from 'react'
 import gif from './../images/landingPage.png'
 import {Link} from 'react-router-dom'
 import Seo from './Utilities/Seo'
-import BeatLoader from "react-spinners/BeatLoader"
 
 function Landing() {
 

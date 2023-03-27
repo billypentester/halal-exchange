@@ -18,15 +18,8 @@ function TopPools() {
   return (
     <div class="container" style={{ marginTop:'4rem' }}>
 
-      <div class="p-5 bg-light">
-        <h1 class="">All Pools</h1>
-        <nav class="d-flex">
-          <h6 class="mb-0">
-            <Link to="/pools" class="text-reset">Pools</Link>
-            <span> / </span>
-            <Link to="/pools/top" class="text-reset text-decoration-underline">Top Pools</Link>
-          </h6>
-        </nav>
+<div className="py-5 text-center">
+        <h1 className="display-6 ">Top Pools</h1>
       </div>
 
       <table class="table mb-5 table-hover align-middle">

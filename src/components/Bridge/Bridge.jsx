@@ -25,6 +25,13 @@ function Bridge() {
       text: "Provide liquidity to the bridge and earn rewards for providing liquidity to the bridge pool",
       button: "Find",
       link: "/bridge/liquidity"
+    },
+    {
+      image: "https://img.icons8.com/ios/50/null/bridge.png",
+      title: "Check Poisitions",
+      text: "Check your positions in the bridge and see how much you have earned in rewards",
+      button: "Check",
+      link: "/bridge/positions"
     }
   ]
 

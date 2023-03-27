@@ -35,10 +35,7 @@ function TokenStats() {
     scales: {
       y: {
         display:false,
-      },
-      // x: {
-      //   display:false,
-      // }
+      }
     }
   };
 
