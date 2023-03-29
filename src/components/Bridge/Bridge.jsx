@@ -31,7 +31,7 @@ function Bridge() {
       title: "Check Poisitions",
       text: "Check your positions in the bridge and see how much you have earned in rewards",
       button: "Check",
-      link: "/bridge/positions"
+      link: "/pools/liquidity"
     }
   ]
 
