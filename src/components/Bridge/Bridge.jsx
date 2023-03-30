@@ -28,7 +28,7 @@ function Bridge() {
     },
     {
       image: "https://img.icons8.com/ios/50/null/bridge.png",
-      title: "Check Poisitions",
+      title: "Check Positions",
       text: "Check your positions in the bridge and see how much you have earned in rewards",
       button: "Check",
       link: "/pools/liquidity"

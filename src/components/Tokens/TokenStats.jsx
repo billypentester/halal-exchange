@@ -68,7 +68,7 @@ function TokenStats() {
   return (
     <div style={{ marginTop:'4rem' }}>
 
-      <div className="bg-light shadow-1-strong">
+      <div className="bg-light shadow-2-strong">
         <div className="p-5 container h-25">
           <div className="d-flex justify-content-between">
             <div className="d-flex align-items-center">
@@ -84,40 +84,49 @@ function TokenStats() {
         </div>
       </div>
 
-      <div className="container d-flex my-3 justify-content-center">
+      <div className="container d-flex my-4 justify-content-center">
 
-        <div className="col-7 bg-light rounded-3 p-3 mx-2 shadow-1-strong">
+        <div className="me-4 d-flex align-content-center flex-column justify-content-center">
+          <div className="bg-light text-center rounded-pill shadow-4-strong px-1 py-2">
+            <h5 className="p-1 bg-primary rounded-pill text-white">1D</h5>
+            <h5 className="p-1">1W</h5>
+            <h5 className="p-1">1M</h5>
+            <h5 className="p-1">1Y</h5>
+          </div>
+        </div>
+
+        <div className="col-7 bg-light rounded-3 p-3 mx-2 shadow-4-strong">
           <Line options={options} data={data} />
         </div>
 
         <div className="col-4 rounded-3 mx-2">
 
-          <div className='d-flex flex-column text-end p-3 rounded-3 bg-light shadow-1-strong'>
+          <div className='d-flex flex-column text-end p-3 rounded-3 bg-light shadow-4-strong'>
             <h1>{tokenStat.price}</h1>
             <span className="text-success h4">+{tokenStat.change}</span>
           </div>
 
           <div className="d-flex justify-content-center align-items-center my-3 rounded-3 flex-wrap">
 
-            <div className='col-5 bg-primary m-3 p-3 box rounded-2 text-light shadow-4'>
+            <div className='col-5 bg-primary m-3 p-3 box rounded-2 text-light shadow-4-strong'>
               <div className='d-flex flex-column text-center'>
                 <h3>$ 808.8M</h3>
                 <span>TVL</span>
               </div>
             </div>
-            <div className='col-5 bg-primary m-3 p-3 box rounded-2 text-light shadow-4'>
+            <div className='col-5 bg-primary m-3 p-3 box rounded-2 text-light shadow-4-strong'>
               <div className='d-flex flex-column text-center'>
                 <h3>$ 325.7M</h3>
                 <span>24H volume</span>
               </div>
             </div>
-            <div className='col-5 bg-primary m-3 p-3 box rounded-2 text-light shadow-4'>
+            <div className='col-5 bg-primary m-3 p-3 box rounded-2 text-light shadow-4-strong'>
               <div className='d-flex flex-column text-center'>
                 <h3>$ 878.41</h3>
                 <span>52W low</span>
               </div>
             </div>
-            <div className='col-5 bg-primary m-3 p-3 box rounded-2 text-light shadow-4'>
+            <div className='col-5 bg-primary m-3 p-3 box rounded-2 text-light shadow-4-strong'>
               <div className='d-flex flex-column text-center'>
                 <h3>$ 3.9K</h3>
                 <span>52W high</span>
@@ -130,7 +139,7 @@ function TokenStats() {
 
       </div>
 
-      <div className="container m-5 col-7">
+      <div className="container m-5 col-8">
           <h2>Description</h2>
           <p className="p-3">
             USD Coin (USDC) is a stablecoin that is pegged to the US dollar, meaning that its value is designed to be equivalent to one US dollar. It is an ERC-20 token built on the Ethereum blockchain, but it can also be issued on other blockchain networks, such as Algorand and Solana. USDC is one of the most popular stablecoins and is widely used in decentralized finance (DeFi) applications, as well as for trading on cryptocurrency exchanges.
