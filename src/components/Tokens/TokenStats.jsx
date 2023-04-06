@@ -114,18 +114,21 @@ function TokenStats() {
                 <span>TVL</span>
               </div>
             </div>
+
             <div className='col-5 bg-primary m-3 p-3 box rounded-2 text-light shadow-4-strong'>
               <div className='d-flex flex-column text-center'>
                 <h3>$ 325.7M</h3>
                 <span>24H volume</span>
               </div>
             </div>
+
             <div className='col-5 bg-primary m-3 p-3 box rounded-2 text-light shadow-4-strong'>
               <div className='d-flex flex-column text-center'>
                 <h3>$ 878.41</h3>
                 <span>52W low</span>
               </div>
             </div>
+            
             <div className='col-5 bg-primary m-3 p-3 box rounded-2 text-light shadow-4-strong'>
               <div className='d-flex flex-column text-center'>
                 <h3>$ 3.9K</h3>

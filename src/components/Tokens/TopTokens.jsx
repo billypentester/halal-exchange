@@ -16,7 +16,7 @@ function Tokens() {
     <div className="container" style={{ marginTop:'4rem' }}>
 
       <div className="py-5 text-center">
-        <h1 className="display-6 ">Trending Tokens</h1>
+        <h1 className="display-6">Trending Tokens</h1>
       </div>
 
       <div className="d-flex justify-content-between align-items-center">

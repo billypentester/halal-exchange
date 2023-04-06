@@ -18,7 +18,7 @@ function TopPools() {
   return (
     <div class="container" style={{ marginTop:'4rem' }}>
 
-<div className="py-5 text-center">
+      <div className="py-5 text-center">
         <h1 className="display-6 ">Top Pools</h1>
       </div>
 
