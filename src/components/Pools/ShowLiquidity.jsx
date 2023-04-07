@@ -1,8 +1,38 @@
-import React from 'react'
+import React, {useState} from 'react'
+import { Link } from 'react-router-dom';
 
-function showLiquidity() {
+function ShowLiquidity() {
 
-    console.log('showLiquidity')
+    const [position, setPosition] = React.useState({ x: 25});
+    const [isDragging, setIsDragging] = React.useState(false);
+
+    const handleMouseDown = (event) => {
+        setIsDragging(true);
+    };
+
+    const handleMouseMove = (event) => {
+        if (isDragging && event.target.tagName === 'circle') {
+        if(position.x + event.movementX < 25){
+            setPosition({ x: 25 });
+        }
+        else if(position.x + event.movementX > 475){
+            setPosition({ x: 475 });
+        }
+        else{
+            const tranformX = `translateX(${position.x + event.movementX}px)`
+            event.target.style.transform = tranformX;
+            setPosition({ x: position.x + event.movementX });
+        }
+        }
+    };
+
+    const handleMouseUp = (event) => {
+        setIsDragging(false);
+    };
+
+    const handleMouseLeave = (event) => {
+        setIsDragging(false);
+    };
 
   return (
     <div class="container d-flex justify-content-center" style={{ marginTop:'4rem' }}>
@@ -14,29 +44,23 @@ function showLiquidity() {
                     <strong className="mx-3">Bitcoin</strong>
                 </div>
                 <div>
-                    <button className="btn btn-primary mx-2">Add Liquidity</button>
-                    <button className="btn btn-outline-primary mx-2">Remove Liquidity</button>
+                    <Link to="/pools/liquiditystat/add" className="btn btn-primary mx-2">Add Liquidity</Link>
+                    <Link to="/pools/liquiditystat/remove" className="btn btn-outline-primary mx-2">Remove Liquidity</Link>
                 </div>
             </div>
 
             <div className="d-flex justify-content-around mb-4 mx-3">
-                <div className="col-5">
-                    <div className="bg-primary p-3 rounded-3 text-white my-2">
-                        <h6>Liquidity</h6>
-                        <h5 className="text-white my-2">$12345</h5>
-                        <div class="bg-light text-dark px-3 py-2 rounded-3">
-                            <div className="d-flex justify-content-between">
-                                <h6>UNI</h6>
-                                <h6>0.1205</h6>
-                            </div>
-                            <div className="d-flex justify-content-between">
-                                <h6>ETH</h6>
-                                <h6>0.1104</h6>
-                            </div>
-                        </div>
+                <div className="col-6">
+                    <div className="d-flex flex-column mx-4 mb-3 px-4 bg-secondary rounded-3 h-100">
+                        <svg class="range-svg" viewBox="0 0 500 100">
+                            <rect class="range-track" x="25" y="45" width="450" height="10" rx="5" />
+                            <circle draggable class="range-handle range-handle--left" cx={position.x} cy="50" r="12" onMouseDown={handleMouseDown} onMouseMove={handleMouseMove} onMouseUp={handleMouseUp} onMouseLeave={handleMouseLeave} />
+                            <circle class="range-handle range-handle--right" cx="475" cy="50" r="12" />
+                            <rect class="range-selection" x="25" y="45" width="450" height="10" rx="5" />
+                        </svg>
                     </div>
                 </div>
-                <div className="col-5">
+                <div className="col-6">
                     <div className="d-flex flex-column">
                         <div className="bg-primary p-3 rounded-3 text-white my-2">
                             <h6 className="lead">Liquidity</h6>
@@ -98,4 +122,4 @@ function showLiquidity() {
   )
 }
 
-export default showLiquidity
+export default ShowLiquidity
