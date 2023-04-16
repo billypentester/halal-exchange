@@ -1,8 +1,27 @@
-import React, {useEffect} from 'react'
 import Seo from './Utilities/Seo'
+import React, {useState, useEffect, useContext} from 'react'
+import { Token1Context } from "../contexts/Token1Context";
 
 function Swap() {
+  const {
+    Swap,
+    connectWallet,
+    walletAddress,
+    findPool,
+    quoter,
+    estimatedValue,
+    setEstimatedValue,
+    estimatedValue1,
+    setEstimatedValue1,
+  } = useContext(Token1Context);
+  const [r1, setR1] = useState(0.1); //larger number (ending val)
+  // const [r2, setR2] = useState(0); //smaller number(starting val)
+  const [show, setshow] = useState(false);
 
+  const [token1, setToken1] = useState();
+  const [boolean, setBoolean] = useState(true);
+  const [check, setCheck] = useState();
+  const [slippageVal, setSlippageVal] = useState(0);
   useEffect(() => {
     Seo({
       title: "Swap",
@@ -16,9 +35,19 @@ function Swap() {
         <h5 class="card-header h4">Swap</h5>
         <div class="card-body">
           <div className="my-2">
-            <h5 class="card-title text-start mx-4 p-2">You get</h5>
+            <h5 class="card-title text-start mx-4 p-2">You send</h5>
             <div className="d-flex mx-4 p-2">
-              <input type="text" id="form12" className="form-control form-control-lg border-0 px-4 rounded-pill shadow-3-strong mx-3" placeholder='0.0' />
+              <input type="text" id="form12" className="form-control form-control-lg border-0 px-4 rounded-pill shadow-3-strong mx-3" placeholder='0.0'
+               type="number"
+               color="white"
+               value={estimatedValue1}
+              
+               onChange={(e) => {
+                 setToken1(e.target.value);
+                 setEstimatedValue1(e.target.value);
+                 quoter(e.target.value,1);
+               }}
+              />
               <div className="dropdown mx-2 ">
                 <button
                   className="btn btn-lg btn-primary dropdown-toggle rounded-pill"
@@ -38,9 +67,15 @@ function Swap() {
             </div>
           </div>
           <div className='my-2'>
-          <h5 class="card-title text-start mx-4 p-2">You Send</h5>
+          <h5 class="card-title text-start mx-4 p-2">You get</h5>
           <div className="d-flex mx-4 p-2">
-            <input type="text" id="form12" className="form-control form-control-lg border-0 px-4 rounded-pill shadow-3-strong mx-3" placeholder='0.0' />
+            <input type="text" id="form12" className="form-control form-control-lg border-0 px-4 rounded-pill shadow-3-strong mx-3" placeholder='0.0'  value={estimatedValue} 
+                  onChange={(e) => {
+                    setToken1(e.target.value);
+                    setEstimatedValue(e.target.value);
+                    quoter(e.target.value, 2);
+
+                  }}></input>
             <div className="dropdown mx-2 ">
               <button
                 className="btn btn-lg btn-primary dropdown-toggle rounded-pill"
@@ -59,7 +94,32 @@ function Swap() {
             </div>
           </div>
           </div>
-          <button type="button" class="btn btn-lg btn-primary w-75 my-4 rounded-pill">Swap</button>
+          {walletAddress.length > 0 ? (
+              <>
+                {console.log(boolean, r1)}
+          <button 
+          type="button" 
+          class="btn btn-lg btn-primary w-75 my-4 rounded-pill"
+          onClick={() => {
+            Swap(token1, boolean, r1);
+          }}
+        
+          > <span> Swap </span></button>
+          </>
+            ) : (
+              <>
+                <button
+                  type="button" 
+                  class="btn btn-lg btn-primary w-75 my-4 rounded-pill"
+                  
+                  onClick={() => {
+                    connectWallet();
+                  }}
+                >
+                  <span>CONNECT WALLET</span>
+                </button>
+              </>
+            )}
         </div>
       </div>
     </div>
