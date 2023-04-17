@@ -13,14 +13,14 @@
     transition: all 0.3s;
   }
   
-  .boxed input[type="radio"] {
+  .boxed input[type="checkbox"] {
     display: none;
   }
   
-  .boxed input[type="radio"]:checked + label {
+  .boxed input[type="checkbox"]:checked + label {
     border: solid 2px #000;
     border-radius: 10px;
-  }
+  }s
 
   .range-svg {
     width: 100%;
