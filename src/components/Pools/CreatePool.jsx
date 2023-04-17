@@ -74,18 +74,18 @@ function CreatePool() {
                 <h5 class="card-title text-start mx-4 p-2">Fees</h5>
                 <div className="d-flex mx-4 p-2 col-6 boxedradio">
                   <div className="m-2">
-                    <input className='form-control form-control-lg' type="radio" id="0.01" name="skills" value="0.01"/>
+                    <input className='form-control form-control-lg' type="checkbox" id="0.01" name="skills" value="0.01"/>
                     <label for="0.01">0.01</label>
                   </div>
                   <div className="m-2">
-                    <input className='form-control form-control-lg' type="radio" id="0.1" name="skills" value="0.1"/>
+                    <input className='form-control form-control-lg' type="checkbox" id="0.1" name="skills" value="0.1"/>
                     <label for="0.1">0.1</label>
                   </div>
                   <div className="m-2">
-                    <input className='form-control form-control-lg' type="radio" id="0.3" name="skills" value="0.3"/>
+                    <input className='form-control form-control-lg' type="checkbox" id="0.3" name="skills" value="0.3"/>
                     <label for="0.3">0.3</label>
                   </div>
-                </div>
+                </div>s
               </div>
 
             </div>

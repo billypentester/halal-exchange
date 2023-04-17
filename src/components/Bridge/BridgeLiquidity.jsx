@@ -1,6 +1,39 @@
-import React from 'react'
+import React, {useState} from 'react'
 
 function BridgeLiquidity() {
+
+  const [position, setPosition] = useState({ x: 25});
+  const [isDragging, setIsDragging] = useState(false);
+
+  const handleMouseDown = (event) => {
+    setIsDragging(true);
+  };
+
+  const handleMouseMove = (event) => {
+    if (isDragging && event.target.tagName === 'circle') {
+      if(position.x + event.movementX < 25){
+        setPosition({ x: 25 });
+      }
+      else if(position.x + event.movementX > 475){
+        setPosition({ x: 475 });
+      }
+      else{
+        const tranformX = `translateX(${position.x + event.movementX}px)`
+        event.target.style.transform = tranformX;
+        setPosition({ x: position.x + event.movementX });
+      }
+    }
+  };
+
+  const handleMouseUp = (event) => {
+    setIsDragging(false);
+  };
+
+  const handleMouseLeave = (event) => {
+    setIsDragging(false);
+  };
+
+
   return (
     <div class="container" style={{ marginTop:'4rem' }}>
 
@@ -58,8 +91,13 @@ function BridgeLiquidity() {
             </div>
 
             <div className='d-flex col-6 flex-column'>
-                <div className='h-100 bg-danger'>
-                  sd
+                <div className='h-100 d-flex flex-column mx-4 mb-3 px-4 bg-light'>
+                  <svg class="range-svg" viewBox="0 0 500 100">
+                    <rect class="range-track" x="25" y="45" width="450" height="10" rx="5" />
+                    <circle draggable class="range-handle range-handle--left" cx={position.x} cy="50" r="12" onMouseDown={handleMouseDown} onMouseMove={handleMouseMove} onMouseUp={handleMouseUp} onMouseLeave={handleMouseLeave} />
+                    <circle class="range-handle range-handle--right" cx="475" cy="50" r="12" />
+                    <rect class="range-selection" x="25" y="45" width="450" height="10" rx="5" />
+                  </svg>
                 </div>
             </div>
           

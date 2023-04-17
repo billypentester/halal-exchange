@@ -7,6 +7,8 @@ import PoolLiquidity from './PoolLiquidity'
 import TopPools from './TopPools'
 import PoolStats from './PoolStats'
 import ShowLiquidity from './ShowLiquidity'
+import AddLiquidity from './AddLiquidity'
+import RemoveLiquidity from './RemoveLiquidity'
 
 function PoolRouter() {
   return (
@@ -17,6 +19,8 @@ function PoolRouter() {
       <Route path="/top" element={ <TopPools /> } />
       <Route path="/stats/:id" element={ <PoolStats /> } />
       <Route path="/liquiditystat" element={ <ShowLiquidity /> } />
+      <Route path="/liquiditystat/add" element={ <AddLiquidity /> } />
+      <Route path="/liquiditystat/remove" element={ <RemoveLiquidity /> } />
     </Routes>
   )
 }
