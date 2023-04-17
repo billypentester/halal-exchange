@@ -1,7 +1,16 @@
-import React, {useState, useEffect} from 'react'
+
 import './../../index.css'
+import React, {useState, useEffect, useContext} from 'react'
+import { Token1Context } from "../../contexts/Token1Context";
 
 function CreatePool() {
+
+  const {
+    
+    connectWallet,
+    walletAddress,
+    getPrice
+  } = useContext(Token1Context);
 
   const [position, setPosition] = useState({ x: 25});
   const [isDragging, setIsDragging] = useState(false);
@@ -63,7 +72,7 @@ function CreatePool() {
   
               <div className='my-1 col-6'>
                 <h5 class="card-title text-start mx-4 p-2">Fees</h5>
-                <div className="d-flex mx-4 p-2 col-6 boxed">
+                <div className="d-flex mx-4 p-2 col-6 boxedradio">
                   <div className="m-2">
                     <input className='form-control form-control-lg' type="checkbox" id="0.01" name="skills" value="0.01"/>
                     <label for="0.01">0.01</label>
@@ -84,7 +93,7 @@ function CreatePool() {
             <div className='d-flex flex-column col-6'>
 
               <div className='my-1'>
-                <h5 class="card-title text-start mx-4 p-2">Set Price Range</h5>
+                <h5 class="card-title text-start mx-4 p-2"></h5>
                 <div className="d-flex flex-column mx-4 mb-3 px-4 bg-light h-100">
                   <svg class="range-svg" viewBox="0 0 500 100">
                     <rect class="range-track" x="25" y="45" width="450" height="10" rx="5" />
@@ -128,7 +137,32 @@ function CreatePool() {
             </div>
 
             <div className='container my-3'>
-              <button type="button" className="btn btn-primary btn-lg rounded-pill w-100">Connect Wallet</button>
+            {walletAddress.length > 0 ? (
+              <>
+                
+          <button 
+          type="button" 
+          class="btn btn-lg btn-primary w-75 my-4 rounded-pill"
+          onClick={() => {
+            getPrice();
+          }}
+        
+          > <span> Create Pool </span></button>
+          </>
+            ) : (
+              <>
+                <button
+                  type="button" 
+                  class="btn btn-lg btn-primary w-75 my-4 rounded-pill"
+                  
+                  onClick={() => {
+                    connectWallet();
+                  }}
+                >
+                  <span>CONNECT WALLET</span>
+                </button>
+              </>
+            )}
             </div>
 
           </div>
