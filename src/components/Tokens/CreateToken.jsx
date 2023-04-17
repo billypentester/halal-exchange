@@ -70,23 +70,23 @@ function CreateToken() {
                 
                           <div className='my-1 col-6'>
                 <h5 class="card-title text-start mx-4 p-2">Fees</h5>
-                <div className="d-flex mx-4 p-2 col-6 boxed">
+                <div className="d-flex mx-4 p-2 col-6 boxedcheckbox">
                   <div className="m-2">
-                    <input className='form-control form-control-lg' type="radio" id="0.01" name="skills" value="0.01" onChange={(e) => {
+                    <input className='form-control form-control-lg' type="checkbox" id="0.01" name="skills" value="0.01" onChange={(e) => {
                     setBoolean1(true)
                     console.log(boolean1);
                   }}/>
                     <label for="0.01">0.01</label>
                   </div>
                   <div className="m-2">
-                    <input className='form-control form-control-lg' type="radio" id="0.1" name="skills" value="0.1" onChange={(e) => {
+                    <input className='form-control form-control-lg' type="checkbox" id="0.1" name="skills" value="0.1" onChange={(e) => {
                     setBoolean2(true);
                     console.log(boolean2);
                     }}/>
                     <label for="0.1">0.1</label>
                   </div>
                   <div className="m-2">
-                    <input className='form-control form-control-lg' type="radio" id="0.3" name="skills" value="0.3" onChange={(e) => {
+                    <input className='form-control form-control-lg' type="checkbox" id="0.3" name="skills" value="0.3" onChange={(e) => {
                     setBoolean3(true)
                     console.log(boolean3)}}/>
                     <label for="0.3">0.3</label>

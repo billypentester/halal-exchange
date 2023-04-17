@@ -4,7 +4,7 @@
     box-sizing: border-box;
 }
 
-.boxed label {
+  .boxedradio label {
     display: inline-block;
     width: 100px;
     padding: 10px;
@@ -13,11 +13,11 @@
     transition: all 0.3s;
   }
   
-  .boxed input[type="radio"] {
+  .boxedradio input[type="radio"] {
     display: none;
   }
   
-  .boxed input[type="radio"]:checked + label {
+  .boxedradio input[type="radio"]:checked + label {
     border: solid 2px #000;
     border-radius: 10px;
   }
@@ -62,5 +62,23 @@
   
   .range-selection.active {
     transform: scaleX(1);
+  }
+
+  .boxedcheckbox label {
+    display: inline-block;
+    width: 100px;
+    padding: 10px;
+    border: solid 2px #ccc;
+    border-radius: 10px;
+    transition: all 0.3s;
+  }
+  
+  .boxedcheckbox input[type="checkbox"] {
+    display: none;
+  }
+  
+  .boxedcheckbox input[type="checkbox"]:checked + label {
+    border: solid 2px #000;
+    border-radius: 10px;
   }
   

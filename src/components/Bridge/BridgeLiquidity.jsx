@@ -39,7 +39,7 @@ function BridgeLiquidity() {
 
               <div className='my-1 col-12'>
                 <h5 class="card-title text-start mx-4 p-2">Fees</h5>
-                <div className="d-flex mx-4 p-2 col-6 boxed">
+                <div className="d-flex mx-4 p-2 col-6 boxedradio">
                   <div className="m-2">
                     <input className='form-control form-control-lg' type="radio" id="0.01" name="skills" value="0.01"/>
                     <label for="0.01">0.01</label>
