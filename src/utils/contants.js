@@ -8,6 +8,7 @@ import kyz from "./KYZ_abi.json";
 import kyztodtx from "./pool1_abi.json";
 import quoter from "./qouter_abi.json";
 import cyt from "./CYT_abi.json";
+import nftmanager from "./NFTManager_abi.json";
 export const chainId = 80001;
 
 export const DMATICAddress = "0xA6aC846d1B4554006bC2221f58B597688cB18C91";
@@ -38,5 +39,8 @@ export const quoterAddress = "0xc19AD3Bc396365BB4fBaBCb92Eccc116e20BEC3D";
 export const quoterABI = quoter;
 
 export const createYourTokenAddress =
-  "0x1a869aCA0e915815f6cc60bf277166f03B20c1dd";
+  "0x8b8951C71467B931c37af1a3d67f2d1752eDF69E";
 export const createYourTokenABI = cyt;
+
+export const NFTManagerAddress = "0xD6E23055a8d868156F75e8Ac5827296e83434683";
+export const NFTManagerABI = nftmanager;

@@ -21,6 +21,9 @@ import {
   chainId,
   createYourTokenABI,
   createYourTokenAddress,
+  NFTManagerABI,
+  NFTManagerAddress,
+  poolAddress,
 } from "../utils/contants";
 import swal from "sweetalert";
 export const Token1Context = createContext();
@@ -33,6 +36,12 @@ export default function TokenProvider({ children }) {
   const [walletAddress, setWalletAddress] = useState("");
   const [estimatedValue, setEstimatedValue] = useState();
   const [estimatedValue1, setEstimatedValue1] = useState();
+  const [loader, setLoader] = useState(false);
+  const [price, setPrice] = useState(0);
+  const [currentPrice, setCurrentPrice] = useState();
+  const [intializedVar, setIntializedVar] = useState(false);
+  const [minPrice, setMinPrice] = useState(1);
+  const [maxPrice, setMaxPrice] = useState(1);
 
   window.web3 = new Web3(window.ethereum);
 
@@ -233,7 +242,7 @@ export default function TokenProvider({ children }) {
         });
         setWalletAddress(accounts[0]);
 
-        console.log(accounts[0]);
+        // console.log(accounts[0]);
       } catch (err) {
         console.error(err.message);
       }
@@ -377,6 +386,7 @@ export default function TokenProvider({ children }) {
         createYourTokenABI,
         createYourTokenAddress
       );
+      alert("confirm transaction");
 
       var value = 0.05;
       value = window.web3.utils.toWei(value.toString(), "ether");
@@ -387,7 +397,7 @@ export default function TokenProvider({ children }) {
             .send({ from: account[0], value: value });
           console.log(PausableMintBurn);
         } catch (err) {
-          console.log(err);
+          console.log("PausableMintBurn", err);
         }
       } else if (boolean1 == true && boolean2 == true && boolean3 == false) {
         try {
@@ -396,7 +406,7 @@ export default function TokenProvider({ children }) {
             .send({ from: account[0], value: value });
           console.log(MintBurn);
         } catch (err) {
-          console.log(err);
+          console.log("MintBurn", err);
         }
       } else if (boolean1 == true && boolean2 == false && boolean3 == true) {
         try {
@@ -405,7 +415,7 @@ export default function TokenProvider({ children }) {
             .send({ from: account[0], value: value });
           console.log(PausableBurn);
         } catch (err) {
-          console.log(err);
+          console.log("PausableBurn", err);
         }
       } else if (boolean1 == false && boolean2 == true && boolean3 == true) {
         try {
@@ -414,7 +424,7 @@ export default function TokenProvider({ children }) {
             .send({ from: account[0], value: value });
           console.log(PausableMint);
         } catch (err) {
-          console.log(err);
+          console.log("PausableMint", err);
         }
       } else if (boolean1 == true && boolean2 == false && boolean3 == false) {
         try {
@@ -423,7 +433,7 @@ export default function TokenProvider({ children }) {
             .send({ from: account[0], value: value });
           console.log(burnable);
         } catch (err) {
-          console.log(err);
+          console.log("burnable", err);
         }
       } else if (boolean1 == false && boolean2 == true && boolean3 == false) {
         try {
@@ -432,7 +442,7 @@ export default function TokenProvider({ children }) {
             .send({ from: account[0], value: value });
           console.log(Mintable);
         } catch (err) {
-          console.log(err);
+          console.log("Mintable", err);
         }
       } else if (boolean1 == false && boolean2 == false && boolean3 == true) {
         try {
@@ -441,16 +451,43 @@ export default function TokenProvider({ children }) {
             .send({ from: account[0], value: value });
           console.log(Pausable);
         } catch (err) {
-          console.log(err);
+          console.log("Pausable", err);
         }
       } else if (boolean1 == false && boolean2 == false && boolean3 == false) {
         try {
+          var returnValue;
+
           const ERC20 = await cycContract.methods
             .DeployERC20(name, symbol, totalSupply, decimals)
-            .send({ from: account[0], value: value });
-          console.log(ERC20);
+            .send({ from: account[0], value: value })
+            .then((value) => {
+              returnValue = value;
+            });
+
+          // if (loader == 0) {
+          console.log("ERC20", ERC20);
+          console.log(returnValue);
+          console.log(returnValue.events.TokenCreated.returnValues.token);
+          return swal({
+            title: "kindly save the following address",
+            text:
+              "Token Address:" +
+              returnValue.events.TokenCreated.returnValues.token,
+            icon: "warning",
+            button: "OK!",
+            className: "modal_class_success",
+          });
+          // }
+
+          // return swal({
+          //   title: "Attention",
+          //   text: ERC20.returnVales[1],
+          //   icon: "warning",
+          //   button: "OK!",
+          //   className: "modal_class_success",
+          // });
         } catch (err) {
-          console.log(err);
+          console.log("ERC20", err);
         }
       }
     }
@@ -465,11 +502,9 @@ export default function TokenProvider({ children }) {
         factoryABI,
         factoryAddress
       );
-
       const getPoolAddress = await factoryContract.methods
         .getPool(kyzAddress, DTXAddress, 3000)
         .call();
-
       const boolean = kyzAddress < DTXAddress;
       console.log(boolean);
       console.log(getPoolAddress);
@@ -479,14 +514,410 @@ export default function TokenProvider({ children }) {
       );
       console.log(PoolContract);
       const slot0 = await PoolContract.methods.slot0().call();
-
+      // sqrtPriceX96 from pool contract
       let sqrtPriceX96 = slot0[0];
+      console.log(Number(sqrtPriceX96));
       console.log(sqrtPriceX96);
-
-      let price = Number((Number(sqrtPriceX96) / (2 ^ 96)) ^ 2);
-      let yes = Math.sqrt(price) * (2 ^ 92);
+      // price from sqrtPriceX96
+      let price = Number((Number(sqrtPriceX96) / 2 ** 96) ** 2);
+      let yes = Math.sqrt(price) * 2 ** 96;
       console.log(yes);
-      console.log(Number(price));
+      console.log(price);
+      console.log("mujee ", Number(price));
+      console.log("------------------");
+      let calculatedsqrtPriceX96 = Math.sqrt(2) * 2 ** 96;
+      console.log("calculated: ", calculatedsqrtPriceX96.toLocaleString());
+      //tick to sqrtPriceX96
+      let tick = slot0[1];
+      let mysqrtpricex96 = Math.sqrt(1.0001) ** (tick / 2) * 2 ** 96;
+      console.log("tick to sqrtPricex96:", mysqrtpricex96);
+      //tick from newPool
+      let CalculatedP = 112045541949572290000000000000 / 2 ** 96;
+      let newbase = Math.sqrt(1.0001);
+      let myNewTick = Math.log(CalculatedP) / Math.log(newbase);
+      console.log("new calculated tick is :", myNewTick.toFixed(0));
+      //price to tick
+      //this is sqrtPriceX96/2^96
+      let p = slot0[0] / 2 ** 96;
+      let base = Number(Math.sqrt(1.0001));
+      let newTick = Math.log(p) / Math.log(base);
+      console.log("new tick price:", newTick);
+      // setting tick spacing
+      const tickSpacing = await PoolContract.methods.tickSpacing().call();
+      console.log("tick spacing", tickSpacing);
+      let mod = newTick % tickSpacing;
+      if (mod == 0) {
+        console.log(newTick);
+      } else if (mod > tickSpacing / 2) {
+        console.log(mod);
+        console.log(tickSpacing);
+        const val = Number(Number(tickSpacing) - Number(mod));
+        console.log(newTick);
+        newTick = newTick + val;
+        console.log(Number(newTick));
+      } else if (mod < tickSpacing / 2) {
+        const val = Number(mod);
+        newTick = newTick - val;
+        console.log(Number(newTick));
+      }
+    }
+  };
+  async function getFactoryContract() {
+    const factoryContract = new window.web3.eth.Contract(
+      factoryABI,
+      factoryAddress
+    );
+    return factoryContract;
+  }
+  async function getManagerContract() {
+    const NFTManagerContract = new window.web3.eth.Contract(
+      NFTManagerABI,
+      NFTManagerAddress
+    );
+    return NFTManagerContract;
+  }
+
+  async function AddLiquidityProfessionally(
+    token0,
+    token1,
+    fee,
+    pRatio,
+    minPrice,
+    maxPrice,
+    token0Amount,
+    token1Amount
+  ) {
+    const factoryContract = await getFactoryContract();
+    let checkPoolAddress = await returnPoolAddress(
+      factoryContract,
+      token0,
+      token1,
+      fee
+    );
+    console.log("CHECKPOOLADDRESS", checkPoolAddress);
+    var boolForReverseCheck = false;
+    if (token0 > token1) {
+      [token0, token1] = [token1, token0];
+      [token0Amount, token1Amount] = [token1Amount, token0Amount];
+      [minPrice, maxPrice] = [1 / minPrice, 1 / maxPrice];
+      boolForReverseCheck = true;
+    }
+    // sqrtPriceX96 = sqrtPriceX96.toLocaleString("fullwide", {
+    //   useGrouping: false,
+    // });
+
+    const poolContract = getPoolContract(checkPoolAddress);
+    const slot0 = await poolContract.methods.slot0().call();
+    const tickSpacing = await poolContract.methods.tickSpacing().call();
+    let CurrentTick = slot0[1];
+    console.log("tick spacing", tickSpacing);
+
+    let SQRPRICE296min = (Math.sqrt(minPrice) * 2 ** 96).toLocaleString(
+      "fullwide",
+      {
+        useGrouping: false,
+      }
+    );
+    console.log("sqrt price:", SQRPRICE296min);
+
+    let CalculatedPmin = SQRPRICE296min / 2 ** 96;
+    let newbasemin = Math.sqrt(1.0001);
+    let minTick = Math.log(CalculatedPmin) / Math.log(newbasemin);
+    console.log("new calculated min tick is :", minTick.toFixed(0));
+
+    let modForMin = minTick % tickSpacing;
+    if (modForMin == 0) {
+      console.log(minTick);
+    } else if (modForMin > tickSpacing / 2) {
+      console.log(modForMin);
+      console.log(tickSpacing);
+      const val = Number(Number(tickSpacing) - Number(modForMin));
+      console.log(val);
+      // console.log(minTick);
+      minTick = minTick + val;
+    } else if (modForMin < tickSpacing / 2) {
+      const val = Number(modForMin);
+      console.log(val);
+      minTick = minTick - val;
+    }
+    console.log("minimum tick exact", Number(minTick));
+
+    //MACX PRICE
+
+    let SQRPRICE296max = (Math.sqrt(maxPrice) * 2 ** 96).toLocaleString(
+      "fullwide",
+      {
+        useGrouping: false,
+      }
+    );
+    console.log("sqrt price:", SQRPRICE296max);
+
+    let CalculatedPmax = SQRPRICE296max / 2 ** 96;
+    let newbasemax = Math.sqrt(1.0001);
+    let myNewTickmax = Math.log(CalculatedPmax) / Math.log(newbasemax);
+    console.log("new calculated max tick is :", myNewTickmax.toFixed(0));
+
+    let modFormax = myNewTickmax % tickSpacing;
+    if (modFormax == 0) {
+      // console.log(minTick);
+    } else if (modFormax > tickSpacing / 2) {
+      console.log(modFormax);
+      console.log(tickSpacing);
+      const val = Number(Number(tickSpacing) - Number(modFormax));
+      console.log(val);
+      // console.log(minTick);
+      myNewTickmax = myNewTickmax + val;
+    } else if (modFormax < tickSpacing / 2) {
+      const val = Number(modFormax);
+      console.log(val);
+      myNewTickmax = myNewTickmax - val;
+    }
+    console.log("maximum tick exact", Number(myNewTickmax));
+
+    let minSqrtPrice = Math.sqrt(1.0001) ** (minTick / 2) * 2 ** 96;
+    console.log("tick to sqrtPricex96:", minSqrtPrice);
+
+    let maxSqrtPrice = Math.sqrt(1.0001) ** (myNewTickmax / 2) * 2 ** 96;
+    console.log("tick to sqrtPricex96:", maxSqrtPrice);
+
+    let Minprice = Number((Number(minSqrtPrice) / 2 ** 96) ** 2);
+    let Maxprice = Number((Number(maxSqrtPrice) / 2 ** 96) ** 2);
+
+    console.log("price max", Maxprice);
+    console.log("price min", Minprice);
+    if (boolForReverseCheck) {
+      setMaxPrice(Maxprice.toFixed(2));
+      setMinPrice(Minprice.toFixed(2));
+    } else {
+      setMaxPrice((1 / Maxprice).toFixed(2));
+      setMinPrice((1 / Minprice).toFixed(2));
+    }
+  }
+
+  async function returnPoolAddress(factoryContract, token0, token1, fee) {
+    const checkPoolAddress = await factoryContract.methods
+      .getPool(token0, token1, fee)
+      .call();
+    return checkPoolAddress;
+  }
+  function getPoolContract(newPoolAddress) {
+    const poolContract = new window.web3.eth.Contract(poolABI, newPoolAddress);
+    return poolContract;
+  }
+  function tickToPrice(tick) {}
+  function PriceToTick(price) {}
+
+  async function mintPosition(newPoolAddress) {}
+  async function getPriceFromPool(token0, token1, newPoolAddress) {
+    const poolContract = getPoolContract(newPoolAddress);
+    const slot0 = await poolContract.methods.slot0().call();
+    console.log(slot0);
+    let mysqrtPriceX96 = slot0[0];
+    let myprice = Number((Number(mysqrtPriceX96) / 2 ** 96) ** 2);
+    setPrice(myprice.toFixed(2));
+    console.log("mujee ", Number(myprice));
+    if (token0 > token1) {
+      setCurrentPrice((1 / myprice).toFixed(2));
+    } else {
+      setCurrentPrice(myprice.toFixed(2));
+    }
+  }
+  async function getPriceOnClick(token0, token1, fee) {
+    console.log("fee", fee);
+    const factoryContract = await getFactoryContract();
+    let checkPoolAddress = await returnPoolAddress(
+      factoryContract,
+      token0,
+      token1,
+      fee
+    );
+    console.log("pool value here:", checkPoolAddress);
+    if (checkPoolAddress == 0x0000000000000000000000000000000000000000) {
+      setCurrentPrice("need to initialize");
+      setIntializedVar(false);
+      // await getPriceFromPool(checkPoolAddress);
+    } else {
+      await getPriceFromPool(token0, token1, checkPoolAddress);
+      setIntializedVar(true);
+    }
+  }
+
+  const initializePool = async (
+    token0,
+    token1,
+    fee,
+    pRatio,
+    minPrice,
+    maxPrice,
+    token0Amount,
+    token1Amount
+  ) => {
+    console.log("--------function call--------");
+
+    var returnValue;
+    if (window.ethereum) {
+      const account = await window.ethereum.request({
+        method: "eth_requestAccounts",
+      });
+      // const factoryContract = await getFactoryContract();
+      // const checkPoolAddress = await returnPoolAddress(
+      //   factoryContract,
+      //   token0,
+      //   token1,
+      //   fee
+      // );
+      // console.log("CHECKPOOLADDRESS", checkPoolAddress);
+
+      const NFTManagerContract = await getManagerContract();
+
+      console.log("haha", NFTManagerContract);
+
+      let sqrtPriceX96 = Math.sqrt(pRatio) * 2 ** 96;
+      sqrtPriceX96 = sqrtPriceX96.toLocaleString("fullwide", {
+        useGrouping: false,
+      });
+      console.log(sqrtPriceX96);
+      if (token0 > token1) {
+        [token0, token1] = [token1, token0];
+      }
+      const createAndInitialize = await NFTManagerContract.methods
+        .createAndInitializePoolIfNecessary(token0, token1, fee, sqrtPriceX96)
+        .send({ from: account[0] })
+        .then((value) => {
+          returnValue = value;
+        });
+      console.log("executed with 500 with SAME : ", createAndInitialize);
+      setIntializedVar(true);
+      const newPoolAddress = returnValue.events[1].address;
+      return newPoolAddress;
+      console.log(newPoolAddress);
+
+      if (token0 < token1) {
+        const createAndInitialize = await NFTManagerContract.methods
+          .createAndInitializePoolIfNecessary(token0, token1, fee, sqrtPriceX96)
+          .send({ from: account[0] })
+          .then((value) => {
+            returnValue = value;
+          });
+        console.log("executed with 500 with SAME : ", createAndInitialize);
+        console.log(returnValue);
+        const newPoolAddress = returnValue.events[1].address;
+        console.log(newPoolAddress);
+        // calculating price
+        const poolContract = getPoolContract(newPoolAddress);
+        const slot0 = await poolContract.methods.slot0().call();
+        console.log(slot0);
+        //price from sqrtPriceX96
+        let mysqrtPriceX96 = slot0[0];
+        let myprice = Number((Number(mysqrtPriceX96) / 2 ** 96) ** 2);
+        setPrice(myprice.toFixed(2));
+        console.log("mujee ", Number(myprice));
+        //calculating tick
+        const tickSpacing = await poolContract.methods.tickSpacing().call();
+        console.log("tick spacing", tickSpacing);
+        //finding tick for min price
+        console.log(minPrice);
+        let modForMin = minPrice % tickSpacing;
+        if (modForMin == 0) {
+          console.log(minPrice);
+        } else if (modForMin > tickSpacing / 2) {
+          console.log(modForMin);
+          console.log(tickSpacing);
+          const val = Number(Number(tickSpacing) - Number(modForMin));
+          console.log(val);
+          console.log(minPrice);
+          minPrice = minPrice + val;
+          console.log(Number(minPrice));
+        } else if (modForMin < tickSpacing / 2) {
+          const val = Number(modForMin);
+          console.log(val);
+          minPrice = minPrice - val;
+          console.log(Number(minPrice));
+        }
+
+        //finding tick for max price
+        let modForMax = maxPrice % tickSpacing;
+        if (modForMax == 0) {
+          console.log(maxPrice);
+        } else if (modForMax > tickSpacing / 2) {
+          console.log(modForMax);
+          console.log(tickSpacing);
+          const val = Number(Number(tickSpacing) - Number(modForMax));
+          console.log(val);
+          console.log(maxPrice);
+          maxPrice = maxPrice + val;
+          console.log(Number(maxPrice));
+        } else if (modForMax < tickSpacing / 2) {
+          const val = Number(modForMax);
+          console.log(val);
+          maxPrice = maxPrice - val;
+          console.log(Number(maxPrice));
+        }
+      } else {
+        [token0, token1] = [token1, token0];
+        const createAndInitialize = await NFTManagerContract.methods
+          .createAndInitializePoolIfNecessary(token0, token1, fee, sqrtPriceX96)
+          .send({ from: account[0] })
+          .then((value) => {
+            returnValue = value;
+          });
+        console.log("executed with 500 with CHANGED : ", createAndInitialize);
+        console.log(returnValue);
+        const newPoolAddress = returnValue.events[1].address;
+        console.log(newPoolAddress);
+        const poolContract = new window.web3.eth.Contract(
+          poolABI,
+          newPoolAddress
+        );
+        const slot0 = await poolContract.methods.slot0().call();
+        console.log(slot0);
+        //price from sqrtPriceX96
+        let mysqrtPriceX96 = slot0[0];
+        let myprice = Number((Number(mysqrtPriceX96) / 2 ** 96) ** 2);
+        setPrice(myprice.toFixed(2));
+        console.log("mujee ", Number(myprice));
+        //inverted ticks when token0>token1
+        const tickSpacing = await poolContract.methods.tickSpacing().call();
+        console.log("tick spacing", tickSpacing);
+        //finding tick for min price
+        minPrice = 1 / minPrice;
+        let modForMin = minPrice % tickSpacing;
+        if (modForMin == 0) {
+          console.log(minPrice);
+        } else if (modForMin > tickSpacing / 2) {
+          console.log(modForMin);
+          console.log(tickSpacing);
+          const val = Number(Number(tickSpacing) - Number(modForMin));
+          console.log(val);
+          console.log(minPrice);
+          minPrice = minPrice + val;
+          console.log(Number(minPrice));
+        } else if (modForMin < tickSpacing / 2) {
+          const val = Number(modForMin);
+          console.log(val);
+          minPrice = minPrice - val;
+          console.log(Number(minPrice));
+        }
+        //finding tick for max price
+        maxPrice = 1 / maxPrice;
+        let modForMax = maxPrice % tickSpacing;
+        if (modForMax == 0) {
+          console.log(maxPrice);
+        } else if (modForMax > tickSpacing / 2) {
+          console.log(modForMax);
+          console.log(tickSpacing);
+          const val = Number(Number(tickSpacing) - Number(modForMax));
+          console.log(val);
+          console.log(maxPrice);
+          maxPrice = maxPrice + val;
+          console.log(Number(maxPrice));
+        } else if (modForMax < tickSpacing / 2) {
+          const val = Number(modForMax);
+          console.log(val);
+          maxPrice = maxPrice - val;
+          console.log(Number(maxPrice));
+        }
+      }
     }
   };
 
@@ -504,6 +935,20 @@ export default function TokenProvider({ children }) {
         setEstimatedValue1,
         createToken,
         getPrice,
+        loader,
+        setLoader,
+        initializePool,
+        setPrice,
+        price,
+        AddLiquidityProfessionally,
+        currentPrice,
+        setCurrentPrice,
+        getPriceOnClick,
+        intializedVar,
+        maxPrice,
+        setMaxPrice,
+        minPrice,
+        setMinPrice,
       }}
     >
       {children}
