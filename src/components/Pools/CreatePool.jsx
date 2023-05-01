@@ -10,7 +10,7 @@ function CreatePool() {
     connectWallet,
     walletAddress,
     getPrice,
-    
+    takeDepositAmount,
     price,
     setPrice,
     AddLiquidityProfessionally,
@@ -20,7 +20,9 @@ function CreatePool() {
     maxPrice, 
     setMaxPrice,
     minPrice, 
-    setMinPrice
+    setMinPrice,
+    initializePool,
+    approveTokens
 
 
   } = useContext(Token1Context);
@@ -113,12 +115,12 @@ useEffect(()=>{
                     console.log(token0Amount)
                   }}/>}
                   
-                  {intializedVar?<input type="text" id="form12" className="form-control form-control-lg border-0 px-4 rounded-pill shadow-3-strong my-2" placeholder='token0' type='number'  onChange={(e)=>{
-                    setToken0Amount(e.target.value)
-                    console.log(token0Amount)
-                  }}/>:<input type="text" id="form12" className="form-control form-control-lg border-0 px-4 rounded-pill shadow-3-strong my-2" disabled placeholder='token1' type='number'  onChange={(e)=>{
+                  {intializedVar?<input type="text" id="form12" className="form-control form-control-lg border-0 px-4 rounded-pill shadow-3-strong my-2" placeholder='token1' type='number'  onChange={(e)=>{
                     setToken1Amount(e.target.value)
                     console.log(token1Amount)
+                  }}/>:<input type="text" id="form12" className="form-control form-control-lg border-0 px-4 rounded-pill shadow-3-strong my-2" disabled placeholder='token1' type='number'  onChange={(e)=>{
+                    setToken1Amount(e.target.value)
+                    console.log("token1 amount set",token1Amount)
                   }}/>}
                 </div>
               </div>
@@ -269,11 +271,26 @@ useEffect(()=>{
                   </div>
                 </div>
               </div>}
+              
               </div>
+              
 
             </div>
             
+
             <div className='container my-3'>
+            <div>
+            <button 
+              type="button" 
+              class="btn btn-lg btn-primary w-75 my-4 rounded-pill" onClick={()=>{
+                approveTokens( token0, token0Amount)
+              }}>Approve token0</button>
+                <button 
+              type="button" 
+              class="btn btn-lg btn-primary w-75 my-4 rounded-pill" onClick={()=>{
+                approveTokens( token1,token1Amount)
+              }}>Approve token1</button>
+            </div>
             {walletAddress.length > 0 ? (
               !intializedVar?<>
                 
@@ -281,19 +298,15 @@ useEffect(()=>{
               type="button" 
               class="btn btn-lg btn-primary w-75 my-4 rounded-pill"
               onClick={() => {
-                AddLiquidityProfessionally(
+                initializePool(
                   token0,
                   token1,
                   fee,
                   pRatio,
-                  minPrice,
-                  maxPrice,
-                  token0Amount,
-                  token1Amount
                 );
               }}
             
-              > <span> Initialize Pool </span></button>
+              > <span> Create and Initialize Pool </span></button>
               </>:
               <>
                 
@@ -313,7 +326,7 @@ useEffect(()=>{
             );
           }}
         
-          > <span> Create Pool </span></button>
+          > <span>  Add Liquidity </span></button>
           </>
             ) : (
               <>
@@ -323,6 +336,7 @@ useEffect(()=>{
                   
                   onClick={() => {
                     connectWallet();
+                    
                   }}
                 >
                   <span>CONNECT WALLET</span>
