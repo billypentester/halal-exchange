@@ -1,9 +1,37 @@
-import React, {useState} from 'react'
+import React, {useState, useContext} from 'react'
+import { BridgeContext } from "../../contexts/BridgeContext";
+import { Token1Context } from '../../contexts/Token1Context';
+import {
+
+  mumBridgeAddress,
+
+} from "../../utils/contants";
+
+
+
 
 function BridgeLiquidity() {
-
+  const {
+    
+    BridgeLiquidityy,
+    APPROVEtoken,
+    
+    
+  } = useContext(BridgeContext);
+  const {
+    connectWallet,
+    walletAddress,
+    
+    
+    
+  } = useContext(Token1Context);
   const [position, setPosition] = useState({ x: 25});
   const [isDragging, setIsDragging] = useState(false);
+  const [tokenValue,setTokenValue]=useState()
+  const [tokenName,setTokenName]=useState()
+  const [chainId,setchainId]=useState()
+  
+  
 
   const handleMouseDown = (event) => {
     setIsDragging(true);
@@ -52,20 +80,31 @@ function BridgeLiquidity() {
                   <div className="my-2">
                     <h5 class="card-title text-start p-2">Chain</h5>
                     <div className="d-flex p-2">
-                      <input type="text" id="form12" className="form-control form-control-lg border-0 px-4 rounded-pill shadow-3-strong mx-3" placeholder='Ex: Ethereum' />
+                      <input type="text" id="form12" className="form-control form-control-lg border-0 px-4 rounded-pill shadow-3-strong mx-3" placeholder='Ex: Ethereum' onChange={(e)=>{ 
+                        setchainId(e.target.value);
+                        console.log(chainId);
+                      }}/>
                     </div>
                   </div>
                   <div className='my-2'>
                     <h5 class="card-title text-start p-2">Token</h5>
                     <div className="d-flex p-2">
-                      <input type="text" id="form12" className="form-control form-control-lg border-0 px-4 rounded-pill shadow-3-strong mx-3" placeholder='Ex: ETH' />
+                      <input type="text" id="form12" className="form-control form-control-lg border-0 px-4 rounded-pill shadow-3-strong mx-3" placeholder='Ex: ETH'onChange={(e)=>{ 
+                        setTokenName(e.target.value);
+                        console.log(tokenName);
+                        
+                      }} />
                     </div>
                   </div>
                 </div>
                 <div className='my-2'>
                   <h5 class="card-title text-start p-2">Deposited Ammount</h5>
                   <div className="d-flex p-2">
-                    <input type="text" id="form12" className="form-control form-control-lg border-0 px-4 rounded-pill shadow-3-strong mx-3" placeholder='0.0' />
+                    <input type="text" id="form12" className="form-control form-control-lg border-0 px-4 rounded-pill shadow-3-strong mx-3" placeholder='0.0' onChange={(e)=>{ 
+                      setTokenValue(e.target.value);
+                      console.log(tokenValue);
+
+                    }}/>
                   </div>
                 </div>
               </div>
@@ -106,7 +145,42 @@ function BridgeLiquidity() {
           
           
           <div className='container my-4'>
-            <button type="button" data-mdb-ripple-color="primary" className="btn btn-primary btn-lg rounded-pill w-100" data-mdb-toggle="modal" data-mdb-target="#exampleModal">Connect Wwallet</button>
+            <button type="button" 
+          class="btn btn-lg btn-primary w-75 my-4 rounded-pill"
+          onClick={() => {
+            APPROVEtoken(tokenName,tokenValue)
+          }}>Approve Token</button>
+
+
+          {walletAddress.length > 0 ? (
+              <>
+                
+          <button 
+          type="button" 
+          class="btn btn-lg btn-primary w-75 my-4 rounded-pill"
+          onClick={() => {
+            BridgeLiquidityy(tokenName,tokenValue);
+          }}
+        
+          > <span> Add Liquidity </span></button>
+          </>
+            ) : (
+              <>
+                <button
+                  type="button" 
+                  class="btn btn-lg btn-primary w-75 my-4 rounded-pill"
+                  
+                  onClick={() => {
+                    connectWallet();
+                   
+                  }}
+                >
+                  <span>CONNECT WALLET</span>
+                </button>
+              </>
+            )}
+            
+          
           </div>
         </div>
       </div>

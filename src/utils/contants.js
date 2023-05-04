@@ -9,7 +9,9 @@ import kyztodtx from "./pool1_abi.json";
 import quoter from "./qouter_abi.json";
 import cyt from "./CYT_abi.json";
 import nftmanager from "./NFTManager_abi.json";
+import bridgeabi from "./bridge_abi.json";
 export const chainId = 80001;
+export const BSCchainid = 0x61;
 
 export const DMATICAddress = "0xA6aC846d1B4554006bC2221f58B597688cB18C91";
 export const DMATICABI = dmatic;
@@ -39,8 +41,12 @@ export const quoterAddress = "0xc19AD3Bc396365BB4fBaBCb92Eccc116e20BEC3D";
 export const quoterABI = quoter;
 
 export const createYourTokenAddress =
-  "0x8b8951C71467B931c37af1a3d67f2d1752eDF69E";
+  "0xCDef10b66f7B1513DC0583089FD34A95F431c5D3";
 export const createYourTokenABI = cyt;
 
 export const NFTManagerAddress = "0xD6E23055a8d868156F75e8Ac5827296e83434683";
 export const NFTManagerABI = nftmanager;
+
+export const bscBridgeAddress = "0x9CE244751064cFb4fE4F345D0A96ef568c0a659b";
+export const bridgeABI = bridgeabi;
+export const mumBridgeAddress = "0x80d4C799FBBD5B1Dc042ec542d15Db7e7A02639c";

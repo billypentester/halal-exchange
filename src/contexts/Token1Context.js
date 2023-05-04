@@ -24,14 +24,15 @@ import {
   NFTManagerABI,
   NFTManagerAddress,
   poolAddress,
+  BSCchainid,
 } from "../utils/contants";
 import swal from "sweetalert";
 export const Token1Context = createContext();
 
 const Web3 = require("web3");
-const web3 = new Web3(
-  "https://polygon-mumbai.infura.io/v3/6e2754c1907e44d0aea9fe116ebbe15d"
-);
+// let web3 = new Web3(
+//   "https://polygon-mumbai.infura.io/v3/6e2754c1907e44d0aea9fe116ebbe15d"
+// );
 export default function TokenProvider({ children }) {
   const [walletAddress, setWalletAddress] = useState("");
   const [estimatedValue, setEstimatedValue] = useState();
@@ -43,176 +44,155 @@ export default function TokenProvider({ children }) {
   const [minPrice, setMinPrice] = useState(1);
   const [maxPrice, setMaxPrice] = useState(1);
 
-  window.web3 = new Web3(window.ethereum);
+  let web3 = new Web3(window.ethereum);
 
   async function Swap(amounts, bool, percent) {
-    if (window.ethereum) {
-      try {
-        const account = await window.ethereum.request({
-          method: "eth_requestAccounts",
-        });
+    // const walletAddress = await connectWallet();
+    // console.log(walletAddress);
+    try {
+      if (bool) {
+        const ContractRouter = new web3.eth.Contract(routerABI, routerAddress);
+        const Contract = new web3.eth.Contract(kyzABI, kyzAddress);
+        // const userAddress = web3.utils.toChecksumAddress(
+        //   window.ethereum.selectedAddress
+        // );
 
-        // console.log(account[0]);
-        if (bool) {
-          const ContractRouter = new window.web3.eth.Contract(
-            routerABI,
-            routerAddress
-          );
-          const Contract = new window.web3.eth.Contract(kyzABI, kyzAddress);
-          // const userAddress = window.web3.utils.toChecksumAddress(
-          //   window.ethereum.selectedAddress
-          // );
-
-          const amount = window.web3.utils.toWei(
-            amounts?.toString() || "0",
-            "ether"
-          );
-          console.log(amount);
-          const Balance = await Contract.methods.balanceOf(account[0]).call();
-          console.log(Balance);
-          if (Balance < amount) {
-            return swal({
-              title: "Attention",
-              text: `You don't have sufficient balance.`,
-              icon: "warning",
-              button: "OK!",
-              className: "modal_class_success",
-            });
-          }
-          console.log(estimatedValue1);
-
-          var slippageValue =
-            estimatedValue1 - (percent * estimatedValue1) / 100;
-          console.log("slippages", slippageValue);
-          slippageValue = window.web3.utils.toWei(
-            slippageValue.toString(),
-            "ether"
-          );
-          console.log("slippages", slippageValue);
-          const Approve = await Contract.methods
-            .approve(routerAddress, amount)
-            .send({ from: account[0] });
-          await Approve;
-          const ExactInputSingle = ContractRouter.methods
-            .exactInputSingle([
-              kyzAddress,
-              DTXAddress,
-              3000,
-              account[0],
-              1780400920,
-              amount,
-              slippageValue,
-              0,
-            ])
-            .send({ from: account[0] });
-
-          await ExactInputSingle;
+        const amount = web3.utils.toWei(amounts?.toString() || "0", "ether");
+        console.log(amount);
+        const Balance = await Contract.methods.balanceOf(walletAddress).call();
+        console.log(Balance);
+        if (Balance < amount) {
           return swal({
-            title: "successfully Swapped",
-            text: `Transaction Successfull`,
-            icon: "success",
+            title: "Attention",
+            text: `You don't have sufficient balance.`,
+            icon: "warning",
             button: "OK!",
             className: "modal_class_success",
           });
-        } else {
-          const ContractRouter = new window.web3.eth.Contract(
-            routerABI,
-            routerAddress
-          );
-          const Contract = new window.web3.eth.Contract(kyzABI, DTXAddress);
-          // const userAddress = window.web3.utils.toChecksumAddress(
-          //   window.ethereum.selectedAddress
-          // );
+        }
+        console.log(estimatedValue1);
 
-          const amount = window.web3.utils.toWei(amounts.toString(), "ether");
+        var slippageValue = estimatedValue1 - (percent * estimatedValue1) / 100;
+        console.log("slippages", slippageValue);
+        slippageValue = web3.utils.toWei(slippageValue.toString(), "ether");
+        console.log("slippages", slippageValue);
+        const Approve = await Contract.methods
+          .approve(routerAddress, amount)
+          .send({ from: walletAddress });
+        await Approve;
+        const ExactInputSingle = ContractRouter.methods
+          .exactInputSingle([
+            kyzAddress,
+            DTXAddress,
+            3000,
+            walletAddress,
+            1780400920,
+            amount,
+            slippageValue,
+            0,
+          ])
+          .send({ from: walletAddress });
 
-          console.log(amount);
+        await ExactInputSingle;
+        return swal({
+          title: "successfully Swapped",
+          text: `Transaction Successfull`,
+          icon: "success",
+          button: "OK!",
+          className: "modal_class_success",
+        });
+      } else {
+        const ContractRouter = new web3.eth.Contract(routerABI, routerAddress);
+        const Contract = new web3.eth.Contract(kyzABI, DTXAddress);
+        // const userAddress = web3.utils.toChecksumAddress(
+        //   window.ethereum.selectedAddress
+        // );
 
-          const Balance = await Contract.methods.balanceOf(account[0]).call();
-          console.log(Balance);
-          if (Balance < amount) {
-            return swal({
-              title: "Attention",
-              text: `You don't have sufficient balance.`,
-              icon: "warning",
-              button: "OK!",
-              className: "modal_class_success",
-            });
-          }
+        const amount = web3.utils.toWei(amounts.toString(), "ether");
 
-          var slippageValue =
-            estimatedValue1 - (percent * estimatedValue1) / 100;
-          console.log("slippages", slippageValue);
-          slippageValue = window.web3.utils.toWei(
-            slippageValue.toString(),
-            "ether"
-          );
-          console.log("slippages", slippageValue);
-          const Approve = await Contract.methods
-            .approve(routerAddress, amount)
-            .send({ from: account[0] });
-          await Approve;
+        console.log(amount);
 
-          // console.log(Approve);
-
-          // const ExactInputSingle = await ContractRouter.methods
-          //   .exactInputSingle([
-          //     kyzAddress,
-          //     DTXAddress,
-          //     3000,
-          //     account[0],
-          //     1780400920,
-          //     amount,
-          //     0,
-          //     0,
-          //   ])
-          //   .send({ from: account[0] });
-          const ExactInputSingle = ContractRouter.methods
-            .exactInputSingle([
-              DTXAddress,
-              kyzAddress,
-
-              3000,
-              account[0],
-              1780400920,
-              amount,
-              slippageValue,
-              0,
-            ])
-            .send({ from: account[0] });
-
-          await ExactInputSingle;
+        const Balance = await Contract.methods.balanceOf(walletAddress).call();
+        console.log(Balance);
+        if (Balance < amount) {
           return swal({
-            title: "successfully Swapped",
-            text: `Transaction Successfull`,
-            icon: "success",
+            title: "Attention",
+            text: `You don't have sufficient balance.`,
+            icon: "warning",
             button: "OK!",
             className: "modal_class_success",
           });
         }
 
-        // const value = await window.web3.eth.call(
-        //   {
-        //     from: account[0],
-        //     to: routerAddress,
-        //     data: ExactInputSingle.encodeABI(),
-        //   },
-        //   "latest"
-        // );
-        // console.log(Number(value));
-      } catch (error) {
-        console.log(error);
+        var slippageValue = estimatedValue1 - (percent * estimatedValue1) / 100;
+        console.log("slippages", slippageValue);
+        slippageValue = web3.utils.toWei(slippageValue.toString(), "ether");
+        console.log("slippages", slippageValue);
+        const Approve = await Contract.methods
+          .approve(routerAddress, amount)
+          .send({ from: walletAddress });
+        await Approve;
+
+        // console.log(Approve);
+
+        // const ExactInputSingle = await ContractRouter.methods
+        //   .exactInputSingle([
+        //     kyzAddress,
+        //     DTXAddress,
+        //     3000,
+        //     walletAddress,
+        //     1780400920,
+        //     amount,
+        //     0,
+        //     0,
+        //   ])
+        //   .send({ from: walletAddress });
+        const ExactInputSingle = ContractRouter.methods
+          .exactInputSingle([
+            DTXAddress,
+            kyzAddress,
+
+            3000,
+            walletAddress,
+            1780400920,
+            amount,
+            slippageValue,
+            0,
+          ])
+          .send({ from: walletAddress });
+
+        await ExactInputSingle;
         return swal({
-          title: "Attention",
-          text: `Transaction Reverted.`,
-          icon: "warning",
+          title: "successfully Swapped",
+          text: `Transaction Successfull`,
+          icon: "success",
           button: "OK!",
           className: "modal_class_success",
         });
       }
-      // console.log(userAddress);
+
+      // const value = await web3.eth.call(
+      //   {
+      //     from: walletAddress,
+      //     to: routerAddress,
+      //     data: ExactInputSingle.encodeABI(),
+      //   },
+      //   "latest"
+      // );
+      // console.log(Number(value));
+    } catch (error) {
+      console.log(error);
+      return swal({
+        title: "Attention",
+        text: `Transaction Reverted.`,
+        icon: "warning",
+        button: "OK!",
+        className: "modal_class_success",
+      });
     }
+    // console.log(userAddress);
   }
+
   const connectWallet = async () => {
     // const provider = await detectEthereumProvider();
     if (typeof window != "undefined" && typeof window.ethereum != "undefined") {
@@ -220,6 +200,7 @@ export default function TokenProvider({ children }) {
         const accounts = await window.ethereum.request({
           method: "eth_requestAccounts",
         });
+
         await window.ethereum.request({
           method: "wallet_addEthereumChain",
           params: [
@@ -251,10 +232,7 @@ export default function TokenProvider({ children }) {
     }
   };
   const findPool = async () => {
-    const factoryContract = new window.web3.eth.Contract(
-      factoryABI,
-      factoryAddress
-    );
+    const factoryContract = new web3.eth.Contract(factoryABI, factoryAddress);
     console.log(factoryContract);
     const getPoolAddress = await factoryContract.methods
       .getPool(kyzAddress, DTXAddress, 3000)
@@ -263,9 +241,9 @@ export default function TokenProvider({ children }) {
     console.log(boolean);
     console.log(getPoolAddress);
     console.log("err", poolABI);
-    const PoolContract = new window.web3.eth.Contract(poolABI, getPoolAddress);
+    const PoolContract = new web3.eth.Contract(poolABI, getPoolAddress);
     console.log(PoolContract);
-    const ok = window.web3.eth.abi.encodeParameters(
+    const ok = web3.eth.abi.encodeParameters(
       ["address", "uint24", "address"],
       [
         "0x464f5831dbb146dace9f28fb106b893cfce37034",
@@ -282,7 +260,7 @@ export default function TokenProvider({ children }) {
       ok
     );
 
-    const value = await window.web3.eth.call(
+    const value = await web3.eth.call(
       {
         from: walletAddress,
         to: getPoolAddress,
@@ -293,10 +271,7 @@ export default function TokenProvider({ children }) {
     console.log(Number(value));
   };
   const quoter = async (amounts, token) => {
-    const quoterContract = new window.web3.eth.Contract(
-      quoterABI,
-      quoterAddress
-    );
+    const quoterContract = new web3.eth.Contract(quoterABI, quoterAddress);
     console.log(amounts);
 
     if (token == 1) {
@@ -304,7 +279,7 @@ export default function TokenProvider({ children }) {
         setEstimatedValue(0);
         return;
       }
-      const amount = window.web3.utils.toWei(amounts.toString(), "ether");
+      const amount = web3.utils.toWei(amounts.toString(), "ether");
 
       console.log(amount);
       // const amount = web3.utils.fromWei(amounts, "ether");
@@ -319,7 +294,7 @@ export default function TokenProvider({ children }) {
           0
         );
 
-      const resultEst = await window.web3.eth.call(
+      const resultEst = await web3.eth.call(
         {
           from: "0x0000000000000000000000000000000000000000",
           to: quoterAddress,
@@ -327,7 +302,7 @@ export default function TokenProvider({ children }) {
         },
         "latest"
       );
-      const amount1 = window.web3.utils.fromWei(resultEst.toString(), "ether");
+      const amount1 = web3.utils.fromWei(resultEst.toString(), "ether");
 
       console.log(amount);
       setEstimatedValue(Number(amount1).toFixed(5));
@@ -337,7 +312,7 @@ export default function TokenProvider({ children }) {
         setEstimatedValue1(0);
         return;
       }
-      const amount = window.web3.utils.toWei(amounts.toString(), "ether");
+      const amount = web3.utils.toWei(amounts.toString(), "ether");
 
       console.log(amount);
       // const amount = web3.utils.fromWei(amounts, "ether");
@@ -353,7 +328,7 @@ export default function TokenProvider({ children }) {
           0
         );
 
-      const resultEst = await window.web3.eth.call(
+      const resultEst = await web3.eth.call(
         {
           from: "0x0000000000000000000000000000000000000000",
           to: quoterAddress,
@@ -361,7 +336,7 @@ export default function TokenProvider({ children }) {
         },
         "latest"
       );
-      const amount1 = window.web3.utils.fromWei(resultEst.toString(), "ether");
+      const amount1 = web3.utils.fromWei(resultEst.toString(), "ether");
 
       console.log(amount);
       setEstimatedValue1(Number(amount1).toFixed(5));
@@ -382,19 +357,19 @@ export default function TokenProvider({ children }) {
         method: "eth_requestAccounts",
       });
 
-      const cycContract = new window.web3.eth.Contract(
+      const cycContract = new web3.eth.Contract(
         createYourTokenABI,
         createYourTokenAddress
       );
       alert("confirm transaction");
 
       var value = 0.05;
-      value = window.web3.utils.toWei(value.toString(), "ether");
+      value = web3.utils.toWei(value.toString(), "ether");
       if (boolean1 == true && boolean2 == true && boolean3 == true) {
         try {
           const PausableMintBurn = await cycContract.methods
             .DeployPausableMintBurn(name, symbol, totalSupply, decimals)
-            .send({ from: account[0], value: value });
+            .send({ from: walletAddress, value: value });
           console.log(PausableMintBurn);
         } catch (err) {
           console.log("PausableMintBurn", err);
@@ -403,7 +378,7 @@ export default function TokenProvider({ children }) {
         try {
           const MintBurn = await cycContract.methods
             .DeployMintBurn(name, symbol, totalSupply, decimals)
-            .send({ from: account[0], value: value });
+            .send({ from: walletAddress, value: value });
           console.log(MintBurn);
         } catch (err) {
           console.log("MintBurn", err);
@@ -412,7 +387,7 @@ export default function TokenProvider({ children }) {
         try {
           const PausableBurn = await cycContract.methods
             .DeployPausableBurn(name, symbol, totalSupply, decimals)
-            .send({ from: account[0], value: value });
+            .send({ from: walletAddress, value: value });
           console.log(PausableBurn);
         } catch (err) {
           console.log("PausableBurn", err);
@@ -421,7 +396,7 @@ export default function TokenProvider({ children }) {
         try {
           const PausableMint = await cycContract.methods
             .DeployPausableMint(name, symbol, totalSupply, decimals)
-            .send({ from: account[0], value: value });
+            .send({ from: walletAddress, value: value });
           console.log(PausableMint);
         } catch (err) {
           console.log("PausableMint", err);
@@ -430,7 +405,7 @@ export default function TokenProvider({ children }) {
         try {
           const burnable = await cycContract.methods
             .DeployBurnable(name, symbol, totalSupply, decimals)
-            .send({ from: account[0], value: value });
+            .send({ from: walletAddress, value: value });
           console.log(burnable);
         } catch (err) {
           console.log("burnable", err);
@@ -439,7 +414,7 @@ export default function TokenProvider({ children }) {
         try {
           const Mintable = await cycContract.methods
             .DeployMintable(name, symbol, totalSupply, decimals)
-            .send({ from: account[0], value: value });
+            .send({ from: walletAddress, value: value });
           console.log(Mintable);
         } catch (err) {
           console.log("Mintable", err);
@@ -448,7 +423,7 @@ export default function TokenProvider({ children }) {
         try {
           const Pausable = await cycContract.methods
             .DeployPausable(name, symbol, totalSupply, decimals)
-            .send({ from: account[0], value: value });
+            .send({ from: walletAddress, value: value });
           console.log(Pausable);
         } catch (err) {
           console.log("Pausable", err);
@@ -459,7 +434,7 @@ export default function TokenProvider({ children }) {
 
           const ERC20 = await cycContract.methods
             .DeployERC20(name, symbol, totalSupply, decimals)
-            .send({ from: account[0], value: value })
+            .send({ from: walletAddress, value: value })
             .then((value) => {
               returnValue = value;
             });
@@ -498,20 +473,14 @@ export default function TokenProvider({ children }) {
       const account = await window.ethereum.request({
         method: "eth_requestAccounts",
       });
-      const factoryContract = new window.web3.eth.Contract(
-        factoryABI,
-        factoryAddress
-      );
+      const factoryContract = new web3.eth.Contract(factoryABI, factoryAddress);
       const getPoolAddress = await factoryContract.methods
         .getPool(kyzAddress, DTXAddress, 3000)
         .call();
       const boolean = kyzAddress < DTXAddress;
       console.log(boolean);
       console.log(getPoolAddress);
-      const PoolContract = new window.web3.eth.Contract(
-        poolABI,
-        getPoolAddress
-      );
+      const PoolContract = new web3.eth.Contract(poolABI, getPoolAddress);
       console.log(PoolContract);
       const slot0 = await PoolContract.methods.slot0().call();
       // sqrtPriceX96 from pool contract
@@ -563,14 +532,11 @@ export default function TokenProvider({ children }) {
     }
   };
   async function getFactoryContract() {
-    const factoryContract = new window.web3.eth.Contract(
-      factoryABI,
-      factoryAddress
-    );
+    const factoryContract = new web3.eth.Contract(factoryABI, factoryAddress);
     return factoryContract;
   }
   async function getManagerContract() {
-    const NFTManagerContract = new window.web3.eth.Contract(
+    const NFTManagerContract = new web3.eth.Contract(
       NFTManagerABI,
       NFTManagerAddress
     );
@@ -725,7 +691,7 @@ export default function TokenProvider({ children }) {
         token1Amount,
         0,
         0,
-        account[0],
+        walletAddress,
         TimeOut
       );
 
@@ -740,7 +706,7 @@ export default function TokenProvider({ children }) {
       //     token1Amount,
       //     0,
       //     0,
-      //   account[0],
+      //   walletAddress,
       //   date
       // ])
       // .send();
@@ -754,7 +720,7 @@ export default function TokenProvider({ children }) {
     return checkPoolAddress;
   }
   function getPoolContract(newPoolAddress) {
-    const poolContract = new window.web3.eth.Contract(poolABI, newPoolAddress);
+    const poolContract = new web3.eth.Contract(poolABI, newPoolAddress);
     return poolContract;
   }
   function tickToPrice(tick) {}
@@ -837,7 +803,7 @@ export default function TokenProvider({ children }) {
       }
       const createAndInitialize = await NFTManagerContract.methods
         .createAndInitializePoolIfNecessary(token0, token1, fee, sqrtPriceX96)
-        .send({ from: account[0] })
+        .send({ from: walletAddress })
         .then((value) => {
           returnValue = value;
         });
@@ -851,7 +817,7 @@ export default function TokenProvider({ children }) {
       if (token0 < token1) {
         const createAndInitialize = await NFTManagerContract.methods
           .createAndInitializePoolIfNecessary(token0, token1, fee, sqrtPriceX96)
-          .send({ from: account[0] })
+          .send({ from: walletAddress })
           .then((value) => {
             returnValue = value;
           });
@@ -913,7 +879,7 @@ export default function TokenProvider({ children }) {
         [token0, token1] = [token1, token0];
         const createAndInitialize = await NFTManagerContract.methods
           .createAndInitializePoolIfNecessary(token0, token1, fee, sqrtPriceX96)
-          .send({ from: account[0] })
+          .send({ from: walletAddress })
           .then((value) => {
             returnValue = value;
           });
@@ -921,10 +887,7 @@ export default function TokenProvider({ children }) {
         console.log(returnValue);
         const newPoolAddress = returnValue.events[1].address;
         console.log(newPoolAddress);
-        const poolContract = new window.web3.eth.Contract(
-          poolABI,
-          newPoolAddress
-        );
+        const poolContract = new web3.eth.Contract(poolABI, newPoolAddress);
         const slot0 = await poolContract.methods.slot0().call();
         console.log(slot0);
         //price from sqrtPriceX96
@@ -977,7 +940,7 @@ export default function TokenProvider({ children }) {
     }
   };
   function getTokenContracts(token) {
-    const tokenContract = new window.web3.eth.Contract(kyzABI, token);
+    const tokenContract = new web3.eth.Contract(kyzABI, token);
 
     return tokenContract;
   }
@@ -1061,29 +1024,22 @@ export default function TokenProvider({ children }) {
           recipient,
           deadline,
         ])
-        .send({ from: account[0] });
+        .send({ from: walletAddress });
     }
   }
   async function approveTokens(token, tokenAmount) {
-    if (window.ethereum) {
-      const account = await window.ethereum.request({
-        method: "eth_requestAccounts",
-      });
-      console.log("token address", token);
+    const tokenContract = getTokenContracts(token);
+    const tokenDecimals = await tokenContract.methods.decimals().call();
+    const amountWithDecimals = Number(
+      tokenAmount * 10 ** tokenDecimals
+    ).toLocaleString("fullwide", {
+      useGrouping: false,
+    });
+    const approveTokenss = await tokenContract.methods
+      .approve(NFTManagerAddress, amountWithDecimals)
+      .send({ from: walletAddress });
 
-      const tokenContract = getTokenContracts(token);
-      const tokenDecimals = await tokenContract.methods.decimals().call();
-      const amountWithDecimals = Number(
-        tokenAmount * 10 ** tokenDecimals
-      ).toLocaleString("fullwide", {
-        useGrouping: false,
-      });
-      const approveTokenss = await tokenContract.methods
-        .approve(NFTManagerAddress, amountWithDecimals)
-        .send({ from: account[0] });
-
-      console.log("approved", approveTokenss);
-    }
+    console.log("approved", approveTokenss);
   }
   return (
     <Token1Context.Provider
