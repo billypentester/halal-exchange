@@ -1114,7 +1114,10 @@ export default function TokenProvider({ children }) {
         takeDepositAmount,
         approveTokens,
         formatNumber,
-        checkTime
+        checkTime,
+      
+        getManagerContract,
+        getTokenContracts
       }}
     >
       {children}

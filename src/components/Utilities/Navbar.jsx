@@ -5,6 +5,7 @@ import ConnectWallet from './ConnectWallet';
 import detectEthereumProvider from "@metamask/detect-provider";
 import { useState, useEffect, useContext } from "react";
 import { Token1Context } from "../../contexts/Token1Context";
+
 function Navbar({shadow}) {
     const { connectWallet, walletAddress } = useContext(Token1Context);
 
@@ -51,16 +52,18 @@ function Navbar({shadow}) {
                 </ul> 
                 <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
        
-                    <button type="button" data-mdb-ripple-color="primary" className="btn btn-light mx-3 btn-rounded" data-mdb-toggle="modal" data-mdb-target="#exampleModal"
-
-                    >              <span>
+                    
                     {walletAddress.length > 0
-                      ? `${walletAddress.substring(
+                      ? <button type="button" data-mdb-ripple-color="primary" className="btn btn-light mx-3 btn-rounded"
+
+                      >              <span>{walletAddress.substring(
                           0,
                           8
-                        )}...${walletAddress.substring(38)}`
-                      : "Connect Wallet"}
-                  </span> </button>
+                        )}...{walletAddress.substring(38)}</span> </button>
+                      : <button type="button" data-mdb-ripple-color="primary" className="btn btn-light mx-3 btn-rounded" data-mdb-toggle="modal" data-mdb-target="#exampleModal"
+
+                      >              <span> Connect Wallet </span> </button>}
+                  
                     <button type="button" data-mdb-ripple-color="primary" className="btn btn-light mx-2 btn-floating">
                         <i style={{ fontSize:'20px' }} className="fa-solid fa-gear text-primary"></i>
                     </button>
