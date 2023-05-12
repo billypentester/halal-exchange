@@ -231,16 +231,17 @@ export default function TokenProvider({ children }) {
       console.log("please install MetaMask");
     }
   };
-  const findPool = async () => {
+  const findPool = async (pooltoken1, pooltoken2, set) => {
     const factoryContract = new web3.eth.Contract(factoryABI, factoryAddress);
-    console.log(factoryContract);
+    //console.log(factoryContract);
     const getPoolAddress = await factoryContract.methods
-      .getPool(kyzAddress, DTXAddress, 3000)
+      .getPool(pooltoken1, pooltoken2, 3000)
       .call();
     const boolean = kyzAddress < DTXAddress;
     console.log(boolean);
     console.log(getPoolAddress);
     console.log("err", poolABI);
+
     const PoolContract = new web3.eth.Contract(poolABI, getPoolAddress);
     console.log(PoolContract);
     const ok = web3.eth.abi.encodeParameters(
@@ -1025,6 +1026,8 @@ export default function TokenProvider({ children }) {
           deadline,
         ])
         .send({ from: walletAddress });
+
+      console.log(addLiquidity);
     }
   }
   async function approveTokens(token, tokenAmount) {

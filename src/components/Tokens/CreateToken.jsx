@@ -23,7 +23,7 @@ function CreateToken() {
 
   return (
     <div class="container" style={{ marginTop:'7rem'}}>
-{loader?<>{alert("ok")}
+{loader?<>{}
 
 </>:<></>}
       <div className="d-flex justify-content-center align-items-center py-5">

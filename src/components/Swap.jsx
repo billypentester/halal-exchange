@@ -22,6 +22,10 @@ function Swap() {
   const [boolean, setBoolean] = useState(true);
   const [check, setCheck] = useState();
   const [slippageVal, setSlippageVal] = useState(0);
+  const [pooltoken1, setPooltoken1]= useState();
+  const [pooltoken2, setPooltoken2]= useState();
+  const [fee, setFee]= useState();
+
   useEffect(() => {
     Seo({
       title: "Swap",
@@ -64,7 +68,13 @@ function Swap() {
                   <li><a className="dropdown-item" href="#">WETH</a></li>
                 </ul>
               </div>
+              
             </div>
+            <div className="">
+                <input type="text" onChange={(e)=>{setPooltoken1(e.target.value)}} />
+                <input type="text" onChange={(e)=>{setPooltoken2(e.target.value)}} />
+                <input type="text" onChange={(e)=>{setFee(e.target.value)}} />
+              </div>
           </div>
           <div className='my-2'>
           <h5 class="card-title text-start mx-4 p-2">You get</h5>
