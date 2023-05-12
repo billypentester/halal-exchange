@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React, {useEffect,useState,useContext} from 'react'
 import { useParams } from 'react-router-dom'
 import tokens from '../../data/tokens'
 import { Link } from 'react-router-dom'
@@ -13,6 +13,9 @@ import {
   Legend,
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
+import pools from './../../data/pools';
+import { Token1Context } from "../../contexts/Token1Context";
+const notVerified=require("../../images/notVerified.jpg")
 
 ChartJS.register(
   CategoryScale,
@@ -24,8 +27,18 @@ ChartJS.register(
   Legend
 );
 
-function TokenStats() {
 
+function TokenStats() {
+  const {formatNumber, checkTime}=useContext(Token1Context);
+  const [bool,setbool]=useState(false)
+  
+  const [TokenTrans,setTokenTrans]=useState();
+  const [RemainingTokenTrans,setRemainingTokenTrans]=useState();
+  const [Tokens,setTokens]=useState();
+  const [Decimals,setDecimals]=useState();
+  const { id }=useParams()
+  const [Next,setNext]=useState(10);
+  console.log("params address",id)
   const options = {
     responsive: true,
     labels: {
@@ -55,26 +68,78 @@ function TokenStats() {
 
     ],
   };
+async function getTokenData(address){
+  try{
+    var response=await fetch(`http://localhost:5000/GetToken/${address}`)
+    var data=response.json().then((data)=>{console.log(data.data);setTokens(data.data);})
+    console.log(data.data)
+  }catch(err){
+    console.log(err)
+
+  }
+
+}
+
+
+  async function getTransactions(address){
+    try{
+      var response=await fetch(`http://localhost:5000/TokenTransactions/${address}`)
+      var data=response.json().then((data)=>{console.log(data.data.result);setTokenTrans((data.data.result).slice(0,10));setRemainingTokenTrans((data.data.result));setDecimals(data.decimals);setbool(true)})
+      console.log(data.data)
+    }catch(err){
+      console.log(err)
+
+    }
+
+  }
+  {console.log("remaining length ",RemainingTokenTrans?.length)}
+  function moveNext(){
+    if(bool && Next>0 && Number(Next)<Number(RemainingTokenTrans.length+10))
+    {
+    
+      setTokenTrans(RemainingTokenTrans.slice(Number(Next-10),Number(Next)))
+      
+    }
+  }
+  function changeNext(value){
+    if(Number(Next+value)>0 && Number(Next+value)<Number(RemainingTokenTrans.length+10))
+    {
+      setNext(Number(Next+value))
+    }
+  }
+ 
   
-  const { id } = useParams();
+  const ids=1
 
   const [tokenStat, setTokenStat] = React.useState('');
 
   useEffect(() => {
-    const token = tokens.filter((token) => token.id == id);
+    getTokenData(id)
+    getTransactions(id)
+    const token = tokens.filter((token) => token.id == ids);
     setTokenStat(token[0]);
   },[id])
+  useEffect(()=>{
+    moveNext()
+
+  },[Next])
 
   return (
+    
     <div style={{ marginTop:'4rem' }}>
-
+{Tokens?<>
       <div className="bg-light shadow-2-strong">
         <div className="p-5 container h-25">
           <div className="d-flex justify-content-between">
             <div className="d-flex align-items-center">
-              <img src={tokenStat.image} alt={tokenStat.name} className="img-fluid mx-3" style={{ width:'50px' }} />
-              <h1 className="m-0">{tokenStat.name}</h1>
+              {Tokens.image?<img src={Tokens.image}  className="img-fluid mx-3" style={{ width:'50px' }} />:<img src={notVerified}  className="img-fluid mx-3" style={{ width:'50px' }} />
+              
+              }
+              <h1 className="m-0">{(Tokens.name).toString().charAt(0).toUpperCase()+(Tokens.name).toString().toLowerCase().slice(1)}</h1><br></br><br></br>
+              
             </div>
+            
+            
             <div>
               <button className="btn btn-lg btn-primary mx-3">
                 <Link to={`/swap`} className="text-decoration-none text-light">Swap {tokenStat.name}</Link>
@@ -82,6 +147,14 @@ function TokenStats() {
             </div>
           </div>
         </div>
+        <div className="d-flex align-items-center">
+              <h4>Token Address</h4>
+              <a>{Tokens.token}</a>
+              <h4>Owner Address</h4>
+              <a>{Tokens.owner}</a>
+              
+              
+            </div>
       </div>
 
       <div className="container d-flex my-4 justify-content-center">
@@ -110,47 +183,97 @@ function TokenStats() {
 
             <div className='col-5 bg-primary m-3 p-3 box rounded-2 text-light shadow-4-strong'>
               <div className='d-flex flex-column text-center'>
-                <h3>$ 808.8M</h3>
-                <span>TVL</span>
+                <h3>{formatNumber(Tokens.totalSupply)}</h3>
+                <span>Total Supply</span>
               </div>
             </div>
 
             <div className='col-5 bg-primary m-3 p-3 box rounded-2 text-light shadow-4-strong'>
               <div className='d-flex flex-column text-center'>
-                <h3>$ 325.7M</h3>
-                <span>24H volume</span>
+                <h3>{Tokens.decimals?Tokens.decimals:<></>}</h3>
+                <span>Decimals</span>
               </div>
             </div>
 
             <div className='col-5 bg-primary m-3 p-3 box rounded-2 text-light shadow-4-strong'>
               <div className='d-flex flex-column text-center'>
-                <h3>$ 878.41</h3>
-                <span>52W low</span>
+                <h3>{(Tokens.symbol).toString().toUpperCase()}</h3>
+                <span>Symbol</span>
               </div>
             </div>
-            
-            <div className='col-5 bg-primary m-3 p-3 box rounded-2 text-light shadow-4-strong'>
+            {Tokens.verified?<div className='col-5 bg-primary m-3 p-3 box rounded-2 text-light shadow-4-strong'>
               <div className='d-flex flex-column text-center'>
-                <h3>$ 3.9K</h3>
-                <span>52W high</span>
+                
+                <span>Verified</span>
+              </div>
+            </div>:
+            <div className='col-5 bg-danger m-3 p-3 box rounded-2 text-light shadow-4-strong'>
+              <div className='d-flex flex-column text-center'>
+                
+                <span>Not Verified</span>
               </div>
             </div>
+}
 
           </div>
 
         </div>
 
       </div>
-
+{Tokens.description?
       <div className="container m-5 col-8">
           <h2>Description</h2>
           <p className="p-3">
-            USD Coin (USDC) is a stablecoin that is pegged to the US dollar, meaning that its value is designed to be equivalent to one US dollar. It is an ERC-20 token built on the Ethereum blockchain, but it can also be issued on other blockchain networks, such as Algorand and Solana. USDC is one of the most popular stablecoins and is widely used in decentralized finance (DeFi) applications, as well as for trading on cryptocurrency exchanges.
-            USDC is backed by reserves of US dollars held in custody by regulated financial institutions, which are audited regularly to ensure transparency and accountability.<br/> This makes USDC a trustworthy and reliable stablecoin, as it is fully collateralized by a reserve of assets that can be redeemed at any time. Moreover, USDC transactions are fast, cheap, and secure, as they can be settled on the Ethereum blockchain in a matter of seconds and are subject to the same level of security as other Ethereum-based tokens.
-            Overall, USDC is a stable and convenient cryptocurrency that can be used for a variety of purposes, from making payments and remittances to trading and investing in DeFi protocols. Its stability and transparency make it an attractive alternative to traditional payment methods and other cryptocurrencies that are subject to price volatility.
-          </p>
-      </div>
+            {Tokens.description}
+            </p>
+      </div>:<></>
+}
+      <div className="container my-5 mx-auto col-10 d-flex flex-column justify-content-center">
+          
+          <h2>Transsactions</h2>
 
+          <table class="table mb-5 mt-3 table-hover align-middle">
+            <thead class="table-light">
+              <tr>
+                <th scope="col">Action</th>
+                <th scope="col">Total Value</th>
+                <th scope="col">From</th>
+                <th scope="col">To</th>
+                
+                <th scope="col">Time</th>
+              </tr>
+            </thead>
+            <tbody>
+              { TokenTrans?
+                TokenTrans.map((pool) => (
+                  <tr key={pool.id} id={pool.id} style={{ cursor:'pointer' }} onClick={{}}>
+                    <th scope="row">Transfer</th>
+                    <td>
+                      
+                      {(pool.data.value/ 10 ** Decimals).toLocaleString(
+        "fullwide",
+        {
+          useGrouping: false,
+        }
+      )} 
+                    </td>
+                    <td class="h6"><a href={`https://mumbai.polygonscan.com/address/${pool.data.from}`} target="_blank">{(pool.data.from).substr(0,5)}...{(pool.data.from).substr(-4)}</a></td>
+                    <td class="h6"><a href={`https://mumbai.polygonscan.com/address/${pool.data.to}`} target="_blank">{(pool.data.to).substr(0,5)}...{(pool.data.to).substr(-4)}</a></td>
+                    
+                    <td class="h6">{checkTime(pool.block_timestamp)}</td>             
+                  </tr>
+                )):<></>
+              }
+            </tbody>
+          </table>
+          <button onClick={ ()=>{ changeNext(10)}}>{">>"}</button>
+          <br></br>
+          <br></br>
+          <button onClick={ ()=>{ changeNext(-10)}}>{"<<"}</button>
+
+
+      </div></>
+      :<></>}
     </div>
   )
 }

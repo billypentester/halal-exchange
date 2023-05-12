@@ -23,9 +23,9 @@ function CreateToken() {
 
   return (
     <div class="container" style={{ marginTop:'7rem'}}>
-{loader?<>{alert("ok")}
+{/* {loader?<>{alert("ok")}
 
-</>:<></>}
+</>:<></>} */}
       <div className="d-flex justify-content-center align-items-center py-5">
 
         <div class="card text-center shadow-lg col-md-6 col-lg-6 rounded-0 border border-end-0 border-start-0 border-top-0 border-3 border-primary">

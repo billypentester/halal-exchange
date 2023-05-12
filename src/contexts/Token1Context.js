@@ -1041,6 +1041,48 @@ export default function TokenProvider({ children }) {
 
     console.log("approved", approveTokenss);
   }
+
+
+
+
+  function checkTime(time){
+    const targetTime = new Date(time);
+  
+  const currentTime = new Date();
+  
+  const timeDifference = Math.abs(currentTime - targetTime);
+  
+  const secondsDifference = Math.floor(timeDifference / 1000);
+  const minutesDifference = Math.floor(secondsDifference / 60);
+  const hoursDifference = Math.floor(minutesDifference / 60);
+  const daysDifference = Math.floor(hoursDifference / 24);
+  
+  if (daysDifference > 0) {
+    return(` ${daysDifference} day${daysDifference === 1 ? '' : 's'} ago`);
+  } else if (hoursDifference > 0) {
+    return(` ${hoursDifference} hour${hoursDifference === 1 ? '' : 's'} ago`);
+  } else if (minutesDifference > 0) {
+    return(` ${minutesDifference} minute${minutesDifference === 1 ? '' : 's'} ago.`);
+  } else {
+    return(` ${secondsDifference} second${secondsDifference === 1 ? '' : 's'} ago`);
+  }
+  } 
+
+  function formatNumber(num) {
+    const units = ['K', 'M', 'B'];
+    let unitIndex = 0;
+    while (num >= 1000 && unitIndex < units.length - 1) {
+      num /= 1000;
+      unitIndex++;
+    }
+    let formattedNum = num.toFixed(2);
+    const decimalIndex = formattedNum.indexOf('.');
+    const numDigits = decimalIndex === -1 ? formattedNum.length : decimalIndex;
+    const zerosToAdd = Math.max(0, 3 - numDigits);
+    formattedNum = formattedNum;
+    formattedNum += units[unitIndex];
+    return formattedNum;
+  }
   return (
     <Token1Context.Provider
       value={{
@@ -1071,6 +1113,8 @@ export default function TokenProvider({ children }) {
         setMinPrice,
         takeDepositAmount,
         approveTokens,
+        formatNumber,
+        checkTime
       }}
     >
       {children}

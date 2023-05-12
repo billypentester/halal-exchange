@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useState,useContext} from 'react'
 import { useParams } from 'react-router-dom'
 import pools from './../../data/pools'
 import { Link, useNavigate } from 'react-router-dom'
@@ -13,7 +13,7 @@ import {
   Legend,
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
-
+import { Token1Context } from "../../contexts/Token1Context";
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -25,8 +25,14 @@ ChartJS.register(
 );
 
 function PoolStats() {
-
+  const [bool,setbool]=useState(false)
+  const [Next,setNext]=useState(10);
+  const {formatNumber, checkTime}=useContext(Token1Context);
+  const [Pool,setPool]=useState()
+  const [arr,setArr]=useState([]);
+  const [PoolTrans,setPoolTrans]=useState()
   const navigate = useNavigate();
+  const [RemainingPoolTrans,setRemainingPoolTrans]=useState();
 
   const handleRowClick = (e) => {
     const id = e.currentTarget.id;
@@ -63,20 +69,68 @@ function PoolStats() {
 
     ],
   };
+  async function getPoolData(address){
+    try{
+      var response=await fetch(`http://localhost:5000/GetPool/${address}`)
+      var data=response.json().then((data)=>{console.log(data.data);setPool(data)
+      setArr((data.data.name).split("/"))})
+      console.log(data.data)
+      
+      
+      
+    }catch(err){
+      console.log(err)
+  
+    }
+  
+  }
+  async function getPoolTransactions(address){
+    try{
+      var response=await fetch(`http://localhost:5000/PoolTransactions/${address}`)
+      var data=response.json().then((data)=>{console.log(data.data.result);setPoolTrans((data.data.result).slice(0,10));setRemainingPoolTrans(data.data.result);setbool(true)})
+      console.log(data.data)
+    }catch(err){
+      console.log(err)
+
+    }
+
+  }
+  {console.log("value remaining",RemainingPoolTrans?.length)}
+  function moveNext(){
+    if(bool && Next>0 && Number(Next)<Number(RemainingPoolTrans.length+10))
+    {
+    
+      setPoolTrans(RemainingPoolTrans.slice(Number(Next-10),Number(Next)))
+      
+    }
+  }
+  function changeNext(value){
+    if(Number(Next+value)>0 && Number(Next+value)<Number(RemainingPoolTrans.length+10))
+    {
+      setNext(Number(Next+value))
+    }
+  }
 
   const { id } = useParams();
-
+  const ids=1
   const [poolStat, setPoolStat] = React.useState('');
 
   useEffect(() => {
-    const pool = pools.filter((pool) => pool.id == id);
+    getPoolData(id)
+    getPoolTransactions(id)
+    const pool = pools.filter((pool) => pool.id == ids);
     console.log(pool[0]);
     setPoolStat(pool[0]);
-  },[id])
+  },[ids])
+
+  useEffect(()=>{
+    moveNext()
+
+  },[Next])
 
   return (
     <div style={{ marginTop:'4rem' }}>
-
+{Pool?<>
       <div className="bg-light shadow-2-strong">
         <div className="p-5 container h-25">
           <div className="d-flex justify-content-between">
@@ -85,8 +139,8 @@ function PoolStats() {
                 <img src={poolStat.tokensPicture[0].picture} alt={poolStat.name} className="img-fluid" style={{ width:'50px' }} />
                 <img src={poolStat.tokensPicture[1].picture} alt={poolStat.name} className="img-fluid" style={{ width:'50px' }} />
               </div> */}
-              <h1 className="m-0">{poolStat.name}</h1>
-              <span className="mx-3 bg-primary px-3 py-1 rounded-3 text-white">{poolStat.fee} %</span>
+              <h1 className="m-0">{(Pool.data.name).toString().toUpperCase()}</h1>
+              <span className="mx-3 bg-primary px-3 py-1 rounded-3 text-white">{Pool.data.fee} %</span>
             </div>
             <div>
               <button className="btn btn-lg btn-primary mx-3">
@@ -95,7 +149,15 @@ function PoolStats() {
             </div>
           </div>
         </div>
+        <div className="d-flex align-items-center">
+              <h4>Pool Address</h4>
+              <a>{Pool.data.pool}</a>
+             
+              
+              
+            </div>
       </div>
+      
 
       <div className="container d-flex my-4 justify-content-center">
 
@@ -124,8 +186,8 @@ function PoolStats() {
             <div className='col-12 my-3'>
               <div className='bg-primary p-3 mx-3 rounded-2 text-light shadow-4-strong'>
                 <div className='d-flex flex-column text-center'>
-                  <h3>{poolStat.marketGap}</h3>
-                  <span>TVL</span>
+                  <h3>{Pool.data.tickSpacing}</h3>
+                  <span>Tick Spacing</span>
                 </div>
               </div>
             </div>
@@ -135,8 +197,13 @@ function PoolStats() {
               <div className='col-6 my-3'>
                 <div className='bg-primary p-3 mx-3 rounded-2 text-light shadow-4-strong'>
                   <div className='d-flex flex-column text-center'>
-                    <h3>{poolStat.volume24H}</h3>
-                    <span>24H volume</span>
+                    <h3>{formatNumber((Pool.amount0/10**Pool.decimal0).toLocaleString(
+        "fullwide",
+        {
+          useGrouping: false,
+        }
+      ))}</h3>
+                    <span>{arr[0]}</span>
                   </div>
                 </div>
               </div>
@@ -144,8 +211,13 @@ function PoolStats() {
               <div className='col-6 my-3'>
                 <div className='bg-primary mx-3 p-3 rounded-2 text-light shadow-4-strong'>
                   <div className='d-flex flex-column text-center'>
-                    <h3>{poolStat.volume7D}</h3>
-                    <span>7D volume</span>
+                    <h3>{formatNumber((Pool.amount1/10**Pool.decimal1).toLocaleString(
+        "fullwide",
+        {
+          useGrouping: false,
+        }
+      ))}</h3>
+                    <span>{arr[1]}</span>
                   </div>
                 </div>
               </div>
@@ -162,7 +234,7 @@ function PoolStats() {
           
           <h2>Transsactions</h2>
 
-          <table class="table mb-5 mt-3 table-hover align-middle">
+          {/* <table class="table mb-5 mt-3 table-hover align-middle">
             <thead class="table-light">
               <tr>
                 <th scope="col">Pool</th>
@@ -196,9 +268,64 @@ function PoolStats() {
                 ))
               }
             </tbody>
+          </table> */}
+{PoolTrans?
+          <table class="table mb-5 mt-3 table-hover align-middle">
+            <thead class="table-light">
+              <tr>
+                <th scope="col">Pool</th>
+                {/* <th scope="col">Total Value</th> */}
+                <th scope="col">{arr[0]} Ammount</th>
+                <th scope="col">{arr[1]} Ammount</th>
+                <th scope="col">Account</th>
+                <th scope="col">Time</th>
+              </tr>
+            </thead>
+            <tbody>
+              {
+                PoolTrans.map((pool) => (
+                  <tr key={pool.id} id={pool.id} style={{ cursor:'pointer' }} onClick={{}}>
+                    {Number(pool.data.amount0)>0?<th scope="row">Swap {arr[0]} for {arr[1]} </th>:<th scope="row">Swap {arr[1]} for {arr[0]} </th>}
+                    
+                    {/* <td>
+                      <div class="d-flex align-items-center">
+                        <div class="m-1">
+                          <img style={{ width: '40px', height: '40px' }} class="rounded-circle " src={pool.tokensPicture[0].picture} alt="pool" />
+                          <img style={{ width: '40px', height: '40px' }} class="rounded-circle " src={pool.tokensPicture[1].picture} alt="pool" />
+                        </div>
+                        <span class="m-1 h6">{pool.name}</span>
+                        <span class="m-1 bg-light p-1 rounded-3">{pool.fee}%</span>
+                      </div>  
+                    </td> */}
+                    <td class="h6">{((pool.data.amount0)/10**(Pool.decimal0)).toLocaleString(
+        "fullwide",
+        {
+          useGrouping: false,
+        }
+      )}</td>
+                    <td class="h6">{((pool.data.amount1)/10**(Pool.decimal1)).toLocaleString(
+        "fullwide",
+        {
+          useGrouping: false,
+        }
+      )}</td>
+                    <td class="h6"><a href={`https://mumbai.polygonscan.com/address/${pool.data.recipient}`} target="_blank" >{(pool.data.recipient).substr(0,5)}...{(pool.data.recipient).substr(-4)}</a></td>  
+                    <td class="h6">{checkTime(pool.block_timestamp)}</td>             
+                  </tr>
+                ))
+              }
+            </tbody>
+            
           </table>
+          
+          :<></>}
+          <button onClick={ ()=>{ changeNext(10)}}>{">>"}</button>
+          <br></br>
+          <br></br>
+          <button onClick={ ()=>{ changeNext(-10)}}>{"<<"}</button>
 
-      </div>
+      </div></>:<></>}
+      
         
 
     </div>
